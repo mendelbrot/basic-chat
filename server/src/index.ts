@@ -1,11 +1,11 @@
 import express, { Express, Request, Response } from "express";
+import routes from './routes'
 
-const port = 8000;
+const port: number = Number(process.env.PORT) || 8000;
 const app: Express = express();
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("HELLO FROM EXPRESS + TS!!!!");
-});
+app.use(express.json());
+app.use('/api', routes);
 
 app.listen(port, () => {
   console.log(`now listening on port ${port}`);

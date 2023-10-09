@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  devpg:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - 5000:5432
+  testpg:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - 5001:5432
