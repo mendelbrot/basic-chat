@@ -1,5 +1,5 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
-import sequelize from '../db';
+import db from '../db';
 
 class Message extends Model {
   declare id: number;
@@ -19,12 +19,9 @@ Message.init(
     },
   },
   {
-    sequelize,
+    sequelize: db,
     underscored: true
   }
 );
-
-// Create the table if it doesn't exist
-Message.sync();
 
 export default Message;
