@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import supertest from "supertest";
-import app from "../src/index";
+import app from "../src/main";
 
 describe("A simple API endpoint", () => {
   it("should return a specific response from an endpoint", async () => {
