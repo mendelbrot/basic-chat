@@ -13,7 +13,7 @@ Message.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    message: {
+    content: {
       type: DataTypes.STRING,
       allowNull: false,
     },
