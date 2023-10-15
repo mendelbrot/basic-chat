@@ -9,6 +9,6 @@ export async function getMessages(req: Request, res: Response) {
     console.log(error);
     res
       .status(500)
-      .json({ error: "An error occurred while fetching messages." });
+      .json({ error: "Server error." });
   }
 }

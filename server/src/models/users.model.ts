@@ -1,20 +1,25 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import db from '../lib/db';
 
-class Message extends Model {
+class User extends Model {
   declare id: number;
-  declare message: string;
+  declare username: string;
+  declare password: string;
 }
 
-Message.init(
+User.init(
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    content: {
-      type: DataTypes.TEXT,
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    password: {
+      type: DataTypes.STRING,
     },
   },
   {
@@ -23,4 +28,4 @@ Message.init(
   }
 );
 
-export default Message;
+export default User;
