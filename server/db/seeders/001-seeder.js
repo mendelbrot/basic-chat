@@ -16,7 +16,7 @@ module.exports = {
     const user1 = result1[0][0].id;
 
     const result2 = await queryInterface.sequelize.query(
-      `INSERT INTO users (username, password, created_at, updated_at)
+      `INSERT INTO users (username, password, active_at, created_at, updated_at)
       VALUES ('user2', 'password', NOW(), NOW(), NOW())
       RETURNING id;`,
       {

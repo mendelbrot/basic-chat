@@ -39,7 +39,7 @@ export async function authenticateToken(
         .json({ message: "Authorization error: invalid authorization token" });
     }
 
-    let user = await User.findOne({ where: { id: payload.id } });
+    let user = await User.findOne({ where: { id: payload.sub } });
     if (!user) {
       return res
         .status(401)
