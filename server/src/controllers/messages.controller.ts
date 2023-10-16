@@ -6,9 +6,9 @@ export async function getMessages(req: Request, res: Response) {
     const messages = await Message.findAll();
     res.status(200).json(messages);
   } catch (error) {
-    console.log(error);
+    console.log("getMessages error", error);
     res
       .status(500)
-      .json({ error: "Server error." });
+      .json({ error: "Internal server error." });
   }
 }

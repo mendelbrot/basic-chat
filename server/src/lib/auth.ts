@@ -3,46 +3,60 @@ import { Request, Response, NextFunction } from "express";
 import User from "../models/users.model";
 
 export interface RequestWithUserInfo extends Request {
-  user: User
+  user: User;
 }
 
-export async function authenticateJWT(
+export function signToken(user: User): string {
+  return jwt.sign(
+    { sub: user.id, username: user.username },
+    process.env.SECRET as string,
+    {
+      expiresIn: "1h",
+    }
+  );
+}
+
+export async function authenticateToken(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  const token = req.header("Authorization");
-
-  if (!token) {
-    return res
-      .status(401)
-      .json({ message: "Authorization error: Missing Authorization token" });
-  }
-
-  let payload: JwtPayload;
   try {
-    payload = jwt.verify(token, process.env.SECRET as string) as JwtPayload;
+    const token = req.header("Authorization")?.replace(/Bearer /, "");
 
-    if (!payload.id) {
-      throw new Error('no user id');
+    if (!token) {
+      return res
+        .status(401)
+        .json({ message: "Authorization error: missing authorization token" });
     }
-  } catch (error) {
-    return res
-      .status(401)
-      .json({ message: "Authorization error: Invalid Authorization token" });
-  }
 
-  let user: User | null;
-  try {
-    user = await User.findOne({ where: { id: payload.id } });
+    let payload: JwtPayload;
+    try {
+      payload = jwt.verify(token, process.env.SECRET as string) as JwtPayload;
+    } catch (error) {
+      return res
+        .status(401)
+        .json({ message: "Authorization error: invalid authorization token" });
+    }
 
+    let user = await User.findOne({ where: { id: payload.id } });
     if (!user) {
-      throw new Error('user not found');
+      return res
+        .status(401)
+        .json({ message: "Authorization error: user not found" });
     }
-  } catch (error) {
-    return res.status(500).json({ message: "Authorization error: user not found" });
-  }
 
-  (req as RequestWithUserInfo).user = user;
-  next();
+    user.activeAt = new Date();
+    await user.save();
+
+    req.user = user;
+
+    const newToken = signToken(user);
+    res.header("Authorization", `Bearer ${newToken}`);
+
+    next();
+  } catch (error) {
+    console.log("authenticateToken error", error);
+    res.status(500).json({ error: "Internal server error." });
+  }
 }

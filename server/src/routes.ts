@@ -1,15 +1,15 @@
 import express, { Router } from "express";
 import { getMessages } from "./controllers/messages.controller";
 import { signIn } from "./controllers/auth.controller";
-import { authenticateJWT } from "./lib/auth";
+import { authenticateToken } from "./lib/auth";
 
 const router: Router = express.Router();
 const api: Router = express.Router();
 const admin: Router = express.Router();
 const auth: Router = express.Router();
 
-api.use(authenticateJWT);
-admin.use(authenticateJWT);
+api.use(authenticateToken);
+admin.use(authenticateToken);
 
 router.use("/api", api);
 router.use("/admin", admin);

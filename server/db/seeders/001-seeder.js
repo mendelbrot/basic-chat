@@ -5,8 +5,8 @@ const { QueryTypes } = require("sequelize");
 module.exports = {
   async up(queryInterface, Sequelize) {
     const result1 = await queryInterface.sequelize.query(
-      `INSERT INTO users (username, password, created_at, updated_at)
-      VALUES ('user1', 'password', NOW(), NOW())
+      `INSERT INTO users (username, password, active_at, created_at, updated_at)
+      VALUES ('user1', 'password', NOW(), NOW(), NOW())
       RETURNING id;`,
       {
         type: QueryTypes.INSERT,
@@ -17,7 +17,7 @@ module.exports = {
 
     const result2 = await queryInterface.sequelize.query(
       `INSERT INTO users (username, password, created_at, updated_at)
-      VALUES ('user2', 'password', NOW(), NOW())
+      VALUES ('user2', 'password', NOW(), NOW(), NOW())
       RETURNING id;`,
       {
         type: QueryTypes.INSERT,
