@@ -16,10 +16,11 @@
     "db:test:up": "docker compose -f docker-compose.test.yml up -d",
     "db:test:migrate": "npx sequelize-cli db:migrate --env test",
     "db:test:seed": "npx sequelize-cli db:seed:all --env test",
+    "db:test:seed:undo": "npx sequelize-cli db:seed:undo:all --env test",
     "db:test:restart": "npm run db:test:rm ; sleep 1 ; npm run db:test:up && sleep 1 && npm run db:test:migrate && npm run db:test:seed",
     "predev": "npm run build",
     "dev": "dotenv -f .env.dev run concurrently \"npx tsc -w\" \"nodemon dist/src/main.js\"",
-    "pretest": "npm run build && npm run db:test:restart",
+    "pretest": "npm run build && npm run db:test:seed:undo && npm run db:test:seed",
     "test": "dotenv -f .env.test run mocha --exit \"./dist/test/**/*.test.js\""
   },
   "author": "",

@@ -1,14 +1,18 @@
 "use strict";
 const { QueryTypes } = require("sequelize");
+const bcrypt = require('bcrypt');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    const hash = await bcrypt.hash("password", 10);
+
     const result1 = await queryInterface.sequelize.query(
       `INSERT INTO users (username, password, active_at, created_at, updated_at)
-      VALUES ('user1', 'password', NOW(), NOW(), NOW())
+      VALUES ('user1', :password, NOW(), NOW(), NOW())
       RETURNING id;`,
       {
+        replacements: { password: hash },
         type: QueryTypes.INSERT,
       }
     );
@@ -17,9 +21,10 @@ module.exports = {
 
     const result2 = await queryInterface.sequelize.query(
       `INSERT INTO users (username, password, active_at, created_at, updated_at)
-      VALUES ('user2', 'password', NOW(), NOW(), NOW())
+      VALUES ('user2', :password, NOW(), NOW(), NOW())
       RETURNING id;`,
       {
+        replacements: { password: hash },
         type: QueryTypes.INSERT,
       }
     );

@@ -22,28 +22,29 @@ export async function authenticateToken(
   next: NextFunction
 ) {
   try {
-    const token = req.header("Authorization")?.replace(/Bearer /, "");
+    const token = req.header("authorization")?.replace(/Bearer /, "");
 
     if (!token) {
-      return res
+      res
         .status(401)
-        .json({ message: "Authorization error: missing authorization token" });
+        .json({ message: "Missing authorization token" });
+      return;
     }
 
     let payload: JwtPayload;
     try {
       payload = jwt.verify(token, process.env.SECRET as string) as JwtPayload;
     } catch (error) {
-      return res
+      res
         .status(401)
-        .json({ message: "Authorization error: invalid authorization token" });
+        .json({ message: "Invalid authorization token" });
+      return;
     }
 
     let user = await User.findOne({ where: { id: payload.sub } });
     if (!user) {
-      return res
-        .status(401)
-        .json({ message: "Authorization error: user not found" });
+      res.status(401).json({ message: "User not found" });
+      return;
     }
 
     user.activeAt = new Date();
@@ -52,7 +53,7 @@ export async function authenticateToken(
     req.user = user;
 
     const newToken = signToken(user);
-    res.header("Authorization", `Bearer ${newToken}`);
+    res.header("authorization", `Bearer ${newToken}`);
 
     next();
   } catch (error) {

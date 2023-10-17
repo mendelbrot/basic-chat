@@ -25,20 +25,20 @@ export async function createUser(req: Request, res: Response) {
     const { username, password } = req.body;
 
     if (await User.findOne({ where: { username: username } })) {
-      return res
-        .status(409)
-        .json({ error: `Username ${username} is already taken.` });
+      res.status(409).json({ error: `Username ${username} is already taken.` });
+      return;
     }
 
     const passwordValidation = validatePasswordRequirements(password);
 
     if (!passwordValidation.valid) {
-      return res.status(400).json({
+      res.status(400).json({
         error: `Password does not meet requirements: ${passwordValidation.message}`,
       });
+      return;
     }
 
-    const hash = bcrypt.hash(password, SALT_ROUNDS);
+    const hash = await bcrypt.hash(password, SALT_ROUNDS);
 
     const user: PublicUser = await User.create(
       { username: username, password: hash },

@@ -17,6 +17,6 @@ router.use("/auth", auth);
 
 api.get("/messages", getMessages);
 
-auth.get("/sign-in", signIn);
+auth.post("/sign-in", signIn);
 
 export default router;
