@@ -23,13 +23,12 @@ describe("sign in", () => {
     expect(res.header["authorization"]).to.be.undefined;
   });
 
-  it("should provide token if credentials are correct", async () => {
+  it("should 200 provide token if credentials are correct", async () => {
     const res = await supertest(app).post("/auth/sign-in").send({
       username: "user1",
       password: "password",
     });
     expect(res.statusCode).to.equal(200);
-    console.log(res)
     expect(res.headers["authorization"])
       .to.be.a("string")
       .and.match(/^Bearer /);

@@ -1,9 +1,19 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import db from '../lib/db';
+import User from './users.model';
+
+export const publicMessageFields = [
+  "id",
+  "content",
+  "userId",
+  "createdAt",
+  "updatedAt",
+];
 
 class Message extends Model {
   declare id: number;
   declare message: string;
+  declare userId: string;
 }
 
 Message.init(
@@ -22,5 +32,10 @@ Message.init(
     underscored: true
   }
 );
+
+Message.belongsTo(User, {
+  foreignKey: 'userId',
+});
+
 
 export default Message;

@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { getMessages } from "./controllers/messages.controller";
+import { getMessages, createMessage } from "./controllers/messages.controller";
 import { signIn } from "./controllers/auth.controller";
 import { authenticateToken } from "./lib/auth";
 
@@ -16,6 +16,7 @@ router.use("/admin", admin);
 router.use("/auth", auth);
 
 api.get("/messages", getMessages);
+api.post("/messages", createMessage);
 
 auth.post("/sign-in", signIn);
 
