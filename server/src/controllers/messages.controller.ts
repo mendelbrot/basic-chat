@@ -27,7 +27,7 @@ export async function createMessage(req: Request, res: Response) {
 
     res.status(201).json(message);
   } catch (error) {
-    console.log("getMessages error", error);
+    console.log("createMessages error", error);
     res.status(500).json({ error: "Internal server error." });
   }
 }
