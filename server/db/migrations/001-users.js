@@ -9,7 +9,7 @@ module.exports = {
         id SERIAL PRIMARY KEY,
         username VARCHAR(255) UNIQUE NOT NULL,
         password VARCHAR(255),
-        active_at TIMESTAMPTZ NOT NULL,
+        active_at TIMESTAMPTZ,
         created_at TIMESTAMPTZ NOT NULL,
         updated_at TIMESTAMPTZ NOT NULL
       );`,
