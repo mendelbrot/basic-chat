@@ -17,7 +17,7 @@ type signInPayload = {
   token: string;
 };
 
-const authUsrMgmtSlice = createSlice({
+const authUserMgmtSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
@@ -35,12 +35,12 @@ export const signin =
     const signedInUser: User = {
       id: 1,
       username: "user1",
-      activeAt: new Date(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      activeAt: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
     const token = "jwt-token...";
-    dispatch(authUsrMgmtSlice.actions.signin({ signedInUser, token }));
+    dispatch(authUserMgmtSlice.actions.signin({ signedInUser, token }));
   };
 
-export default authUsrMgmtSlice.reducer;
+export default authUserMgmtSlice.reducer;

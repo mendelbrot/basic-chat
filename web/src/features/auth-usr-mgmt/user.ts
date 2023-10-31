@@ -1,7 +1,7 @@
 export type User = {
   id: number;
   username: string;
-  activeAt?: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  activeAt?: string;
+  createdAt: string;
+  updatedAt: string;
 };

@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppThunk, AppDispatch } from "../../main";
+import { AppThunk, AppDispatch, RootState } from "../../main";
 import { Message } from "./message";
 
-const initialState: { draft: string | null; messages: Message[] } = {
-  draft: null,
+const initialState: { draft: string; messages: Message[] } = {
+  draft: "",
   messages: [],
 };
 
@@ -15,7 +15,7 @@ const chatSlice = createSlice({
       state.draft = action.payload;
     },
     sendMessage(state, action: PayloadAction<Message>) {
-      state.draft = null;
+      state.draft = "";
       state.messages.push(action.payload);
     },
   },
@@ -28,15 +28,18 @@ export const typeMessage =
   };
 
 export const sendMessage =
-  (content: string): AppThunk =>
-  async (dispatch: AppDispatch) => {
+  (): AppThunk => async (dispatch: AppDispatch, getState: () => RootState) => {
+    const draft = getState().chat.draft;
+    if (draft === "") {
+      return;
+    }
     // TODO send the message and get response
     const message: Message = {
-      content: content,
+      content: draft,
       userId: 1,
       id: 44,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
 
     dispatch(chatSlice.actions.sendMessage(message));
