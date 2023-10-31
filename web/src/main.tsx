@@ -4,7 +4,7 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./layout";
 import Chatroom from "./pages/chatroom";
-import Signin from "./pages/auth/sign-in";
+import SignIn from "./pages/auth/sign-in";
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { combineReducers } from "@reduxjs/toolkit";
@@ -24,7 +24,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "auth/sign-in/",
-    element: <Signin />,
+    element: <SignIn />,
   },
 ]);
 

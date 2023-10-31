@@ -1,17 +1,15 @@
-import { Message } from "./message";
+import { RootState } from "../../main";
 import MessageListItem from "./message-list-item";
-
-const messages: Message[] = [
-  {
-    id: 1,
-    userId: 1,
-    content: "hello",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
+import { useSelector } from "react-redux";
 
 function MessageList() {
+  const messages = useSelector((state: RootState) => state.chat.messages);
+  const signedInUser = useSelector(
+    (state: RootState) => state.user.signedInUser
+  );
+
+  if (!signedInUser) return;
+
   return (
     <>
       <ul>
@@ -19,7 +17,9 @@ function MessageList() {
           <MessageListItem
             key={message.id}
             message={message}
-            sendDirection={"inbound"}
+            sendDirection={
+              signedInUser.id === message.userId ? "outbound" : "inbound"
+            }
           />
         ))}
       </ul>

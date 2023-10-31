@@ -4,7 +4,7 @@ function Layout() {
   return (
     <div>
       <div className="border-b-2 border-gray-600">
-        <NavLink to="/auth/signin">Sign In</NavLink>
+        <NavLink to="/auth/sign-in">Sign In</NavLink>
       </div>
       <Outlet />
     </div>

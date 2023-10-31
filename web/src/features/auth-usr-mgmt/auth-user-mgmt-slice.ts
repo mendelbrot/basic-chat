@@ -21,14 +21,14 @@ const authUserMgmtSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    signin(state, action: PayloadAction<signInPayload>) {
+    signIn(state, action: PayloadAction<signInPayload>) {
       state.signedInUser = action.payload.signedInUser;
       state.token = action.payload.token;
     },
   },
 });
 
-export const signin =
+export const signIn =
   (username: string, password: string): AppThunk =>
   async (dispatch: AppDispatch) => {
     // TODO get current user and token
@@ -40,7 +40,9 @@ export const signin =
       updatedAt: new Date().toISOString(),
     };
     const token = "jwt-token...";
-    dispatch(authUserMgmtSlice.actions.signin({ signedInUser, token }));
+    // redirect to chat page
+
+    dispatch(authUserMgmtSlice.actions.signIn({ signedInUser, token }));
   };
 
 export default authUserMgmtSlice.reducer;

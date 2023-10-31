@@ -6,7 +6,6 @@ function MessageInput() {
   const draft = useSelector((state: RootState) => state.chat.draft);
   return (
     <>
-      <div>{draft}</div>
       <textarea
         value={draft}
         onChange={(event) => store.dispatch(typeMessage(event.target.value))}
