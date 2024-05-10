@@ -1,8 +1,8 @@
 import express, { Router } from "express";
-import { getMessages, createMessage } from "./controllers/messages.controller";
+import { createMessage, getMessages } from "./controllers/messages.controller";
 import { signIn } from "./controllers/auth.controller";
 import { authenticateToken } from "./lib/auth";
-import { getMe, createUser } from "./controllers/users.controller";
+import { getMe, getUsers, createUser } from "./controllers/users.controller";
 
 const router: Router = express.Router();
 const auth: Router = express.Router();
@@ -19,7 +19,7 @@ api.post("/messages", createMessage);
 api.get("/messages", getMessages);
 
 api.get("/users/me", getMe); // get the currently signed in user
-api.post("/users", createUser)
-// api.get("/users", getUsers)
+api.post("/users", createUser);
+api.get("/users", getUsers);
 
 export default router;

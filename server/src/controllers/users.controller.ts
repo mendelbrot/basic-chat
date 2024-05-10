@@ -52,3 +52,13 @@ export async function createUser(req: Request, res: Response) {
     res.status(500).json({ error: "Internal server error." });
   }
 }
+
+export async function getUsers(req: Request, res: Response) {
+  try {
+    const users = await User.findAll({ attributes: publicUserFields });
+    res.status(200).json(users);
+  } catch (error) {
+    console.log("getUsers error", error);
+    res.status(500).json({ error: "Internal server error." });
+  }
+}
