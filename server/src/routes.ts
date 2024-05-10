@@ -2,25 +2,24 @@ import express, { Router } from "express";
 import { getMessages, createMessage } from "./controllers/messages.controller";
 import { signIn } from "./controllers/auth.controller";
 import { authenticateToken } from "./lib/auth";
-import { createUser } from "./controllers/admin.controller";
+import { getMe, createUser } from "./controllers/users.controller";
 
 const router: Router = express.Router();
-const api: Router = express.Router();
-const admin: Router = express.Router();
 const auth: Router = express.Router();
+const api: Router = express.Router();
 
 api.use(authenticateToken);
-admin.use(authenticateToken);
 
-router.use("/api", api);
-router.use("/admin", admin);
 router.use("/auth", auth);
-
-api.get("/messages", getMessages);
-api.post("/messages", createMessage);
+router.use("/api", api);
 
 auth.post("/sign-in", signIn);
 
-admin.post("/users", createUser)
+api.post("/messages", createMessage);
+api.get("/messages", getMessages);
+
+api.get("/users/me", getMe); // get the currently signed in user
+api.post("/users", createUser)
+// api.get("/users", getUsers)
 
 export default router;

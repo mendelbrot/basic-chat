@@ -1,8 +1,7 @@
 import { expect } from "chai";
 import supertest from "supertest";
 import app from "../src/main";
-import { signToken } from "../src/lib/auth";
-import User from "../src/models/users.model";
+import { publicUserFields } from "../src/models/users.model";
 
 describe("sign in", () => {
   it("should 401 if username is incorrect", async () => {
@@ -32,5 +31,15 @@ describe("sign in", () => {
     expect(res.headers["authorization"])
       .to.be.a("string")
       .and.match(/^Bearer /);
+  });
+
+  it("should 200 return the public user fields in the body if credentials are correct", async () => {
+    const res = await supertest(app).post("/auth/sign-in").send({
+      username: "user1",
+      password: "password",
+    });
+    expect(res.body).to.have.all.keys(publicUserFields);
+    expect(res.body).to.not.have.key("password");
+    expect(res.body.activeAt).to.be.a.string;
   });
 });

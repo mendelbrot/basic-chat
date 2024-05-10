@@ -1,4 +1,4 @@
-import { Model, DataTypes, Sequelize } from "sequelize";
+import { Model, DataTypes, CreationOptional } from "sequelize";
 import db from "../lib/db";
 
 export interface PublicUser {
@@ -21,9 +21,9 @@ class User extends Model {
   declare id: number;
   declare username: string;
   declare password: string;
-  declare activeAt: Date;
-  declare createdAt: Date;
-  declare updatedAt: Date;
+  declare activeAt: CreationOptional<Date>;
+  declare createdAt: CreationOptional<Date>;
+  declare updatedAt: CreationOptional<Date>;
 }
 
 User.init(

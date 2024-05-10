@@ -1,4 +1,4 @@
-import { Model, DataTypes, Sequelize } from 'sequelize';
+import { Model, DataTypes, CreationOptional } from 'sequelize';
 import db from '../lib/db';
 import User from './users.model';
 
@@ -14,6 +14,8 @@ class Message extends Model {
   declare id: number;
   declare message: string;
   declare userId: string;
+  declare createdAt: CreationOptional<Date>;
+  declare updatedAt: CreationOptional<Date>;
 }
 
 Message.init(

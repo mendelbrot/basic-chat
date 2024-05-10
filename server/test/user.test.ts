@@ -1,9 +1,8 @@
 import { expect } from "chai";
 import supertest from "supertest";
 import app from "../src/main";
-import { signToken } from "../src/lib/auth";
-import User, { publicUserFields } from "../src/models/users.model";
 import UserTokenClass from "./lib/token";
+import { publicUserFields } from "../src/models/users.model";
 
 let userTokenInstance: UserTokenClass;
 
@@ -16,7 +15,7 @@ describe("create user", () => {
 
   it("should 401 if token is invalid", async () => {
     const res = await supertest(app)
-      .post("/admin/users")
+      .post("/api/users")
       .set("authorization", `Bearer invalidtoken`)
       .send({
         username: "user3",
@@ -28,7 +27,7 @@ describe("create user", () => {
 
   it("should 409 if username is taken", async () => {
     const res = await supertest(app)
-      .post("/admin/users")
+      .post("/api/users")
       .set("authorization", `Bearer ${userTokenInstance.token}`)
       .send({
         username: "user2",
@@ -40,7 +39,7 @@ describe("create user", () => {
 
   it("should 400 if password is too weak", async () => {
     const res = await supertest(app)
-      .post("/admin/users")
+      .post("/api/users")
       .set("authorization", `Bearer ${userTokenInstance.token}`)
       .send({
         username: "user3",
@@ -52,14 +51,23 @@ describe("create user", () => {
 
   it("should 201 return the new user if all inputs are valid", async () => {
     const res = await supertest(app)
-      .post("/admin/users")
+      .post("/api/users")
       .set("authorization", `Bearer ${userTokenInstance.token}`)
       .send({
         username: "user3",
         password: "password",
       });
-    console.log(res.body)
+    console.log(res.body);
     expect(res.statusCode).to.equal(201);
+    expect(res.body).to.have.all.keys(publicUserFields);
+  });
+
+  it("should get the current user", async () => {
+    const res = await supertest(app)
+      .get("/api/users/me")
+      .set("authorization", `Bearer ${userTokenInstance.token}`)
+    console.log(res.body);
+    expect(res.statusCode).to.equal(200);
     expect(res.body).to.have.all.keys(publicUserFields);
   });
 });

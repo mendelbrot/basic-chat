@@ -1,23 +1,14 @@
 import { Request, Response } from "express";
-import User, { PublicUser, publicUserFields } from "../models/users.model";
-import { signToken } from "../lib/auth";
-import * as bcrypt from "bcrypt";
+import User, { publicUserFields } from "../models/users.model";
+import { hashPassword, validatePasswordRequirements } from "../lib/auth";
 
-const MIN_PASSWORD_LENGTH = 8;
-const SALT_ROUNDS = 10;
-
-function validatePasswordRequirements(password: string): {
-  valid: boolean;
-  message?: string;
-} {
-  if (password.length < MIN_PASSWORD_LENGTH) {
-    return {
-      valid: false,
-      message: `Password must be at least ${MIN_PASSWORD_LENGTH} characters.`,
-    };
+export async function getMe(req: Request, res: Response) {
+  try {
+    res.status(200).json(req.user);
+  } catch (error) {
+    console.log("getMe error", error);
+    res.status(500).json({ error: "Internal server error." });
   }
-
-  return { valid: true };
 }
 
 export async function createUser(req: Request, res: Response) {
@@ -45,16 +36,15 @@ export async function createUser(req: Request, res: Response) {
       return;
     }
 
-    const hash = await bcrypt.hash(password, SALT_ROUNDS);
+    const hash = await hashPassword(password);
 
-    const user = await User.create(
-      { username: username, password: hash },
-    );
+    // create the user and then retrieve public user fields to return: don't want to return the hashed password...
+    await User.create({ username: username, password: hash });
 
     const publicUser = await User.findOne({
       where: { username: username },
       attributes: publicUserFields,
-    })
+    });
 
     res.status(201).json(publicUser);
   } catch (error) {
