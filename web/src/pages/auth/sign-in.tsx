@@ -3,6 +3,7 @@ import { RootState, store } from "../../main";
 import { signIn } from "../../features/auth-usr-mgmt/auth-user-mgmt-slice";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import UserInfo from "../../features/auth-usr-mgmt/user-info";
 
 function SignIn() {
   const navigate = useNavigate();
