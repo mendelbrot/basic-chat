@@ -3,16 +3,16 @@ import { RootState } from "../../main";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
-function SignInSignOutLink() {
+function loginlogoutLink() {
   const signedInUser = useSelector(
     (state: RootState) => state.user.signedInUser
   );
 
   if (signedInUser) {
-    return <NavLink to="/auth/sign-out">Sign Out</NavLink>;
+    return <NavLink to="/auth/logout">Sign Out</NavLink>;
   } else {
-    return <NavLink to="/auth/sign-in">Sign In</NavLink>;
+    return <NavLink to="/auth/login">Sign In</NavLink>;
   }
 }
 
-export default SignInSignOutLink;
+export default loginlogoutLink;

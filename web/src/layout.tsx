@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import UserInfo from "./features/auth-usr-mgmt/user-info";
-import SignInSignOutLink from "./features/auth-usr-mgmt/sign-in-sign-out-link";
+import UserInfo from "./features/user/user-info";
+import loginlogoutLink from "./features/user/login-logout-link";
 
 function Layout() {
   return (
@@ -9,7 +9,7 @@ function Layout() {
         <div></div>
         <div className="flex flex-col">
           <UserInfo />
-          <SignInSignOutLink />
+          <loginlogoutLink />
         </div>
       </div>
       <Outlet />

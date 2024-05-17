@@ -4,12 +4,12 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./layout";
 import Chatroom from "./pages/chatroom";
-import SignIn from "./pages/auth/sign-in";
+import login from "./pages/auth/login";
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { combineReducers } from "@reduxjs/toolkit";
 import chatSlice from "./features/chat/chat-slice";
-import authUserMgmtSlice from "./features/auth-usr-mgmt/auth-user-mgmt-slice";
+import authUserMgmtSlice from "./features/user/auth-user-mgmt-slice";
 
 export const router = createBrowserRouter([
   {
@@ -23,8 +23,8 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "auth/sign-in/",
-    element: <SignIn />,
+    path: "auth/login/",
+    element: <login />,
   },
 ]);
 

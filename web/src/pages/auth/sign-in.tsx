@@ -1,11 +1,11 @@
 import React from "react";
 import { RootState, store } from "../../main";
-import { signIn } from "../../features/auth-usr-mgmt/auth-user-mgmt-slice";
+import { login } from "../../features/user/auth-user-mgmt-slice";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import UserInfo from "../../features/auth-usr-mgmt/user-info";
+import UserInfo from "../../features/user/user-info";
 
-function SignIn() {
+function login() {
   const navigate = useNavigate();
   const signedInUser = useSelector(
     (state: RootState) => state.user.signedInUser
@@ -33,11 +33,11 @@ function SignIn() {
         value={password}
         onChange={(event) => setPassword(event.target.value)}
       />
-      <button onClick={() => store.dispatch(signIn(username, password))}>
+      <button onClick={() => store.dispatch(login(username, password))}>
         Sign in
       </button>
     </>
   );
 }
 
-export default SignIn;
+export default login;

@@ -1,6 +1,5 @@
 import MessageInput from "../features/chat/message-input";
 import MessageList from "../features/chat/message-list";
-import WithSignedIn from "../features/auth-usr-mgmt/with-signed-in";
 
 function Chatroom() {
   return (
@@ -12,5 +11,4 @@ function Chatroom() {
   );
 }
 
-const ChatroomPage = WithSignedIn(Chatroom);
-export default ChatroomPage;
+export default Chatroom;

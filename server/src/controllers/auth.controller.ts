@@ -3,7 +3,7 @@ import User, { publicUserFields } from "../models/users.model";
 import { signToken } from "../lib/auth";
 import * as bcrypt from "bcrypt";
 
-export async function signIn(req: Request, res: Response) {
+export async function login(req: Request, res: Response) {
   try {
     const { username, password } = req.body;
 
@@ -35,7 +35,7 @@ export async function signIn(req: Request, res: Response) {
 
     res.set("authorization", `Bearer ${token}`).status(200).json(publicUser);
   } catch (error) {
-    console.log("signIn error", error);
+    console.log("login error", error);
     res.status(500).json({ error: "Internal server error." });
   }
 }

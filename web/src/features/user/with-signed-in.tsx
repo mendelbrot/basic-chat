@@ -14,7 +14,7 @@ function WithSignedIn(
 
     React.useEffect(() => {
       if (!signedInUser) {
-        navigate("/auth/sign-in");
+        navigate("/auth/login");
       }
     }, [navigate, signedInUser]);
 

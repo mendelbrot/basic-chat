@@ -1,8 +1,8 @@
 describe("Navigation", () => {
-  it("should navigate to the signin page", () => {
+  it("should navigate to the login page", () => {
     cy.visit("http://localhost:3000/");
-    cy.get('a[href*="signin"]').click();
-    cy.url().should("include", "/signin");
+    cy.get('a[href*="login"]').click();
+    cy.url().should("include", "/login");
     cy.get("h1").contains("Sign In Page");
   });
 });

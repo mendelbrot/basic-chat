@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import { createMessage, getMessages } from "./controllers/messages.controller";
-import { signIn } from "./controllers/auth.controller";
+import { login } from "./controllers/auth.controller";
 import { authenticateToken } from "./lib/auth";
 import { getMe, getUsers, createUser } from "./controllers/users.controller";
 
@@ -13,7 +13,7 @@ api.use(authenticateToken);
 router.use("/auth", auth);
 router.use("/api", api);
 
-auth.post("/sign-in", signIn);
+auth.post("/login", login);
 
 api.post("/messages", createMessage);
 api.get("/messages", getMessages);

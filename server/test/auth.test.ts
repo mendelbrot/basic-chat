@@ -5,7 +5,7 @@ import { publicUserFields } from "../src/models/users.model";
 
 describe("sign in", () => {
   it("should 401 if username is incorrect", async () => {
-    const res = await supertest(app).post("/auth/sign-in").send({
+    const res = await supertest(app).post("/auth/login").send({
       username: "soandso",
       password: "password",
     });
@@ -14,7 +14,7 @@ describe("sign in", () => {
   });
 
   it("should 401 if password is incorrect", async () => {
-    const res = await supertest(app).post("/auth/sign-in").send({
+    const res = await supertest(app).post("/auth/login").send({
       username: "user1",
       password: "wrongpassword",
     });
@@ -23,7 +23,7 @@ describe("sign in", () => {
   });
 
   it("should 200 provide token if credentials are correct", async () => {
-    const res = await supertest(app).post("/auth/sign-in").send({
+    const res = await supertest(app).post("/auth/login").send({
       username: "user1",
       password: "password",
     });
@@ -34,7 +34,7 @@ describe("sign in", () => {
   });
 
   it("should 200 return the public user fields in the body if credentials are correct", async () => {
-    const res = await supertest(app).post("/auth/sign-in").send({
+    const res = await supertest(app).post("/auth/login").send({
       username: "user1",
       password: "password",
     });
