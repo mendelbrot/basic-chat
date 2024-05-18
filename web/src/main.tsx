@@ -1,30 +1,48 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Layout from "./layout";
 import Chatroom from "./pages/chatroom";
-import login from "./pages/auth/login";
+import Login from "./pages/auth/login";
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { combineReducers } from "@reduxjs/toolkit";
 import chatSlice from "./features/chat/chat-slice";
 import authUserMgmtSlice from "./features/user/auth-user-mgmt-slice";
+import ProtectedRoute from "./features/auth/protected-route";
+import AuthProviderOutlet from "./features/auth/auth-provider-outlet";
 
-export const router = createBrowserRouter([
+const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: (
+      <AuthProviderOutlet>
+        <Layout />
+      </AuthProviderOutlet>
+    ),
     children: [
       {
         path: "/",
-        element: <Chatroom />,
+        element: <ProtectedRoute />,
+        children: [
+          {
+            path: "/",
+            element: <Chatroom />,
+          },
+        ],
+      },
+      {
+        path: "/auth",
+        element: <Layout />,
+        children: [
+          {
+            path: "/auth/login",
+            element: <Login />,
+          },
+        ],
       },
     ],
-  },
-  {
-    path: "auth/login/",
-    element: <login />,
   },
 ]);
 
@@ -44,7 +62,9 @@ export type AppThunk = ThunkAction<void, RootState, undefined, Action<string>>;
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </Provider>
   </React.StrictMode>
 );

@@ -10,7 +10,7 @@ const api: Router = express.Router();
 
 api.use(authenticateToken);
 
-router.use("/auth", auth);
+router.use("/api/auth", auth);
 router.use("/api", api);
 
 auth.post("/login", login);

@@ -9,8 +9,8 @@ export type LoginFunction = (credentials: UserCredentials) => Promise<void>;
 
 export type LogoutFunction = () => void;
 
-export type AuthContextValue = null | {
-  user: User;
+export type AuthContextValue = {
+  user: User | null;
   login: LoginFunction;
   logout: LogoutFunction;
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { AuthContextValue } from "./auth-types";
 
-const AuthContext = React.createContext(null as AuthContextValue);
+const AuthContext = React.createContext(null as unknown as AuthContextValue);
 
 export default AuthContext;
 

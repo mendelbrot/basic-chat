@@ -2,6 +2,7 @@ import React from "react";
 import AuthContext from "./auth-context";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../../lib/use-local-storage";
+import { UserCredentials } from "./auth-types";
 
 type Props = {
   children: React.ReactNode;
@@ -12,9 +13,11 @@ const AuthProvider = ({ children }: Props) => {
   const [token, setToken] = useLocalStorage("token", null);
   const navigate = useNavigate();
 
-  const login = async (credentials) => {
+  const login = async (credentials: UserCredentials) => {
     // TODO: call backend for token
-    setUser(user);
+    const user = { username: credentials.username };
+    const token = "sometoken";
+    setUser({ user });
     setToken(token);
     navigate("/");
   };
