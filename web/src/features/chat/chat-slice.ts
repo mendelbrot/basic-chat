@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppThunk, AppDispatch, RootState } from "../../main";
-import { Message } from "./message";
+import { Message } from "./message-type";
 
 const initialState: { draft: string; messages: Message[] } = {
   draft: "",
