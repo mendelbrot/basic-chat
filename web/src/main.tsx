@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Layout from "./layout";
 import Chatroom from "./pages/chatroom";
 import Login from "./pages/auth/login";
@@ -11,40 +10,8 @@ import { combineReducers } from "@reduxjs/toolkit";
 import chatSlice from "./features/chat/chat-slice";
 import authUserMgmtSlice from "./features/user/auth-user-mgmt-slice";
 import ProtectedRoute from "./features/auth/protected-route";
-import AuthProviderOutlet from "./features/auth/auth-provider-outlet";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: (
-      <AuthProviderOutlet>
-        <Layout />
-      </AuthProviderOutlet>
-    ),
-    children: [
-      {
-        path: "/",
-        element: <ProtectedRoute />,
-        children: [
-          {
-            path: "/",
-            element: <Chatroom />,
-          },
-        ],
-      },
-      {
-        path: "/auth",
-        element: <Layout />,
-        children: [
-          {
-            path: "/auth/login",
-            element: <Login />,
-          },
-        ],
-      },
-    ],
-  },
-]);
+import AuthProvider from "./features/auth/auth-provider";
+import { Route, Switch } from "wouter";
 
 export const rootReducer = combineReducers({
   chat: chatSlice,
@@ -63,7 +30,18 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
       <AuthProvider>
-        <RouterProvider router={router} />
+        <Switch>
+          <Route path="/">
+            <ProtectedRoute>
+              <Layout>
+                <Chatroom />
+              </Layout>
+            </ProtectedRoute>
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+        </Switch>
       </AuthProvider>
     </Provider>
   </React.StrictMode>

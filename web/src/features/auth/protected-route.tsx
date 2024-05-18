@@ -1,6 +1,6 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
 import useAuth from "./use-auth";
+import Login from "../../features/auth/login";
 
 type Props = {
   children: React.ReactNode;
@@ -9,8 +9,8 @@ type Props = {
 export const ProtectedRoute = ({ children }: Props) => {
   const auth = useAuth();
 
-  if (!auth || !auth.user) {
-    return <Navigate to="/login" />;
+  if (!auth.user) {
+    return <Login />;
   }
 
   return children;

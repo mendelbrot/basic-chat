@@ -1,26 +1,25 @@
-import { Link, Outlet } from "react-router-dom";
 import useAuth from "./features/auth/use-auth";
 
-function Layout() {
-  console.log(useAuth());
+type Props = {
+  children: React.ReactNode;
+};
+
+function Layout({ children }: Props) {
   const auth = useAuth();
+  console.log(auth);
 
   return (
-    <div>
-      <div className="border-b-2 border-gray-600 flex justify-between">
-        <div>{auth.user && auth.user.username}</div>
-        <div className="flex flex-col">
-          {auth.user ? (
-            <a href="#!" onClick={auth.logout}>
-              Log Out
-            </a>
-          ) : (
-            <Link to={"/auth/login"}>Log In</Link>
-          )}
+    auth.user && (
+      <div>
+        <div className="border-b-2 border-gray-600 flex justify-between">
+          <div>{auth.user.username}</div>
+          <div className="flex flex-col">
+            <button onClick={auth.logout}>logout</button>
+          </div>
         </div>
+        {children}
       </div>
-      <Outlet />
-    </div>
+    )
   );
 }
 
