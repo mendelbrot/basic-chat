@@ -5,7 +5,9 @@ export type UserCredentials = {
   password: string;
 };
 
-export type LoginFunction = (credentials: UserCredentials) => Promise<void>;
+export type LoginFunction = (
+  credentials: UserCredentials
+) => Promise<"ok" | "error">;
 
 export type LogoutFunction = () => void;
 

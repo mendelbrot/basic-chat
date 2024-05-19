@@ -6,7 +6,6 @@ type Props = {
 
 function Layout({ children }: Props) {
   const auth = useAuth();
-  console.log(auth);
 
   return (
     auth.user && (

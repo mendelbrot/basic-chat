@@ -13,13 +13,34 @@ const AuthProvider = ({ children }: Props) => {
   const [token, setToken] = useLocalStorage("token", null);
   const [_location, navigate] = useLocation();
 
-  const login = async (credentials: UserCredentials) => {
-    // TODO: call backend for token
-    const user = { username: credentials.username };
-    const token = "sometoken";
-    setUser(user);
-    setToken(token);
-    navigate("/");
+  const login = async (credentials: UserCredentials): Promise<string> => {
+    try {
+      const request = new Request("http://localhost:8000/auth/login", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+
+      const response = await fetch(request);
+
+      const user = await response.json();
+      const token = response.headers.get("authorization");
+
+      if (!user || !token) {
+        throw new Error();
+      }
+
+      setUser(user);
+      setToken(token);
+      navigate("/");
+
+      return "ok";
+    } catch (error) {
+      return "error";
+    }
   };
 
   const logout = () => {
