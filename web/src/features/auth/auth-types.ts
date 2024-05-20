@@ -13,6 +13,7 @@ export type LogoutFunction = () => void;
 
 export type AuthContextValue = {
   user: User | null;
+  token: string;
   login: LoginFunction;
   logout: LogoutFunction;
 };

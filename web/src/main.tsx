@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import Layout from "./layout";
 import Chatroom from "./pages/chatroom";
-import Login from "./features/auth/login";
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { combineReducers } from "@reduxjs/toolkit";
@@ -28,8 +27,8 @@ export type AppThunk = ThunkAction<void, RootState, undefined, Action<string>>;
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <AuthProvider>
+    <AuthProvider>
+      <Provider store={store}>
         <Switch>
           <Route path="/">
             <ProtectedRoute>
@@ -39,7 +38,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             </ProtectedRoute>
           </Route>
         </Switch>
-      </AuthProvider>
-    </Provider>
+      </Provider>
+    </AuthProvider>
   </React.StrictMode>
 );

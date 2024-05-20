@@ -15,7 +15,7 @@ export function signToken(user: User): string {
     { sub: user.id, username: user.username },
     process.env.SECRET as string,
     {
-      expiresIn: "1h",
+      expiresIn: "30d",
     }
   );
 }
@@ -27,17 +27,21 @@ export async function authenticateToken(
 ) {
   try {
     const token = req.header("authorization")?.replace(/Bearer /, "");
+    console.log(req.header("authorization"))
 
     if (!token) {
-      res.status(401).json({ message: "Missing authorization token" });
+      res.status(401).json({ error: "Missing authorization token" });
       return;
     }
 
     let payload: JwtPayload;
     try {
+      console.log(token)
       payload = jwt.verify(token, process.env.SECRET as string) as JwtPayload;
+      console.log(payload)
     } catch (error) {
-      res.status(401).json({ message: "Invalid authorization token" });
+      console.log(error)
+      res.status(401).json({ error: "Invalid authorization token" });
       return;
     }
 
@@ -47,7 +51,7 @@ export async function authenticateToken(
       attributes: publicUserFields, // publicUserFields avoids retrieving the user's hashed password
     });
     if (!user) {
-      res.status(401).json({ message: "User not found" });
+      res.status(401).json({ error: "User not found" });
       return;
     }
 

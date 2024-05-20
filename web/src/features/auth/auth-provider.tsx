@@ -3,6 +3,7 @@ import AuthContext from "./auth-context";
 import { useLocation } from "wouter";
 import { useLocalStorage } from "../../lib/use-local-storage";
 import { UserCredentials } from "./auth-types";
+import api from "../../lib/api";
 
 type Props = {
   children: React.ReactNode;
@@ -13,25 +14,11 @@ const AuthProvider = ({ children }: Props) => {
   const [token, setToken] = useLocalStorage("token", null);
   const [_location, navigate] = useLocation();
 
-  const login = async (credentials: UserCredentials): Promise<string> => {
+  const login = async (
+    credentials: UserCredentials
+  ): Promise<"ok" | "error"> => {
     try {
-      const request = new Request("http://localhost:8000/auth/login", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-      });
-
-      const response = await fetch(request);
-
-      const user = await response.json();
-      const token = response.headers.get("authorization");
-
-      if (!user || !token) {
-        throw new Error();
-      }
+      const { user, token } = await api.login(credentials);
 
       setUser(user);
       setToken(token);
