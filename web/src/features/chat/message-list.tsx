@@ -1,29 +1,22 @@
 import { RootState } from "../../main";
 import MessageListItem from "./message-list-item";
 import { useSelector } from "react-redux";
+import useAuth from "../auth/use-auth";
 
 function MessageList() {
   const messages = useSelector((state: RootState) => state.chat.messages);
-  const signedInUser = useSelector(
-    (state: RootState) => state.user.signedInUser
-  );
-
-  if (!signedInUser) return;
+  const auth = useAuth();
 
   return (
-    <>
-      <ul>
-        {messages.map((message) => (
-          <MessageListItem
-            key={message.id}
-            message={message}
-            sendDirection={
-              signedInUser.id === message.userId ? "outbound" : "inbound"
-            }
-          />
-        ))}
-      </ul>
-    </>
+    <ul>
+      {messages.map((message) => (
+        <MessageListItem
+          key={message.id}
+          message={message}
+          outbound={auth.user?.id === message.userId}
+        />
+      ))}
+    </ul>
   );
 }
 

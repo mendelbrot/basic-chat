@@ -11,8 +11,8 @@ function Layout({ children }: Props) {
     auth.user && (
       <div>
         <div className="border-b-2 border-gray-600 flex justify-between">
-          <div>{auth.user.username}</div>
-          <div className="flex flex-col">
+          <div className="p-4">{auth.user.username}</div>
+          <div className="flex flex-col p-4">
             <button onClick={auth.logout}>logout</button>
           </div>
         </div>
