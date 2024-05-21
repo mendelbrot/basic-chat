@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Message, { publicMessageFields } from "../models/messages.model";
 import User from "../models/users.model";
+import { io } from "../main";
 
 export async function getMessages(req: Request, res: Response) {
   try {
@@ -24,6 +25,8 @@ export async function createMessage(req: Request, res: Response) {
       },
       { fields: publicMessageFields }
     );
+
+    io.emit("broadcast:message:create", JSON.stringify(message))
 
     res.status(201).json(message);
   } catch (error) {

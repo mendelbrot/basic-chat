@@ -29,8 +29,8 @@ export type AppThunk = ThunkAction<void, RootState, undefined, Action<string>>;
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <AuthProvider>
-      <SocketProvider>
-        <Provider store={store}>
+      <Provider store={store}>
+        <SocketProvider>
           <Switch>
             <Route path="/">
               <ProtectedRoute>
@@ -40,8 +40,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               </ProtectedRoute>
             </Route>
           </Switch>
-        </Provider>
-      </SocketProvider>
+        </SocketProvider>
+      </Provider>
     </AuthProvider>
   </React.StrictMode>
 );

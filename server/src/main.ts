@@ -12,14 +12,11 @@ app.use(express.json());
 app.use(routes);
 
 const server = http.createServer(app);
-const io = new Server(server, {
+
+export const io = new Server(server, {
   cors: {
     origin: "*",
   },
-});
-
-io.on("connection", (socket) => {
-  console.log("a user connected");
 });
 
 server.listen(port, () => {
