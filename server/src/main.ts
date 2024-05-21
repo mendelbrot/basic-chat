@@ -1,15 +1,28 @@
 import express, { Express } from "express";
+import http from "http";
+import { Server } from "socket.io";
 import routes from "./routes";
-import cors from "cors"
+import cors from "cors";
 
 const port: number = Number(process.env.PORT) || 8000;
 const app: Express = express();
 
-app.use(cors({exposedHeaders: ['authorization']}))
+app.use(cors({ exposedHeaders: ["authorization"] }));
 app.use(express.json());
 app.use(routes);
 
-app.listen(port, () => {
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("a user connected");
+});
+
+server.listen(port, () => {
   console.log(`Server running on port ${port}.`);
 });
 

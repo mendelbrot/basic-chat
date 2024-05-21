@@ -3,10 +3,12 @@ import MessageInput from "../features/chat/message-input";
 import MessageList from "../features/chat/message-list";
 import { loadMessages } from "../features/chat/chat-slice";
 import { store } from "../main";
+import socket from "../features/websockets/socket";
 
 function Chatroom() {
   React.useEffect(() => {
     store.dispatch(loadMessages());
+    socket.connect();
   }, []);
 
   return (

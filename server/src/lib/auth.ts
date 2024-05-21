@@ -27,7 +27,6 @@ export async function authenticateToken(
 ) {
   try {
     const token = req.header("authorization")?.replace(/Bearer /, "");
-    console.log(req.header("authorization"))
 
     if (!token) {
       res.status(401).json({ error: "Missing authorization token" });
@@ -36,11 +35,8 @@ export async function authenticateToken(
 
     let payload: JwtPayload;
     try {
-      console.log(token)
       payload = jwt.verify(token, process.env.SECRET as string) as JwtPayload;
-      console.log(payload)
     } catch (error) {
-      console.log(error)
       res.status(401).json({ error: "Invalid authorization token" });
       return;
     }

@@ -11,6 +11,7 @@ import userSlice from "./features/user/user-slice";
 import ProtectedRoute from "./features/auth/protected-route";
 import AuthProvider from "./features/auth/auth-provider";
 import { Route, Switch } from "wouter";
+import SocketProvider from "./features/websockets/socket-provider";
 
 export const rootReducer = combineReducers({
   chat: chatSlice,
@@ -28,17 +29,19 @@ export type AppThunk = ThunkAction<void, RootState, undefined, Action<string>>;
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <AuthProvider>
-      <Provider store={store}>
-        <Switch>
-          <Route path="/">
-            <ProtectedRoute>
-              <Layout>
-                <Chatroom />
-              </Layout>
-            </ProtectedRoute>
-          </Route>
-        </Switch>
-      </Provider>
+      <SocketProvider>
+        <Provider store={store}>
+          <Switch>
+            <Route path="/">
+              <ProtectedRoute>
+                <Layout>
+                  <Chatroom />
+                </Layout>
+              </ProtectedRoute>
+            </Route>
+          </Switch>
+        </Provider>
+      </SocketProvider>
     </AuthProvider>
   </React.StrictMode>
 );
