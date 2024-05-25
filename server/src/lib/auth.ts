@@ -2,6 +2,8 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import User, { publicUserFields } from "../models/users.model";
 import * as bcrypt from "bcrypt";
+import { Socket } from "socket.io";
+import { SocketNextFunction } from "../types/socket-types";
 
 const MIN_PASSWORD_LENGTH = 8;
 const SALT_ROUNDS = 10;
@@ -58,13 +60,51 @@ export async function authenticateToken(
     // save the user to the request to be used by controllers
     req.user = user;
 
-    const newToken = signToken(user);
-    res.header("authorization", `Bearer ${newToken}`);
-
     next();
   } catch (error) {
     console.log("authenticateToken error", error);
     res.status(500).json({ error: "Internal server error." });
+  }
+}
+
+export async function authenticateTokenWebsockets(
+  socket: Socket,
+  next: SocketNextFunction
+) {
+  try {
+
+    const token = socket.handshake.auth.token.replace(/Bearer /, "");
+
+    if (!token) {
+      return next(new Error("Missing authorization token"));
+    }
+
+    const payload: JwtPayload = jwt.verify(
+      token,
+      process.env.SECRET as string
+    ) as JwtPayload;
+
+    const user = await User.findOne({
+      where: { id: payload.sub },
+      attributes: publicUserFields, // publicUserFields avoids retrieving the user's hashed password
+    });
+
+    if (!user) {
+      return next(new Error("User not found"));
+    }
+
+    // update the user's activeAt field
+    user.activeAt = new Date();
+
+    await user.save();
+
+    // save the user to the socket
+    socket.user = user;
+
+    next();
+  } catch (error) {
+    console.log("authenticateTokenWebsockets error", error);
+    return next(new Error("Internal server error."));
   }
 }
 

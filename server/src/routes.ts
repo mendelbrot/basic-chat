@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import { createMessage, getMessages } from "./controllers/messages.controller";
-import { login } from "./controllers/auth.controller";
+import { login, refreshToken } from "./controllers/auth.controller";
 import { authenticateToken } from "./lib/auth";
 import { getMe, getUsers, createUser } from "./controllers/users.controller";
 
@@ -14,6 +14,7 @@ router.use("/auth", auth);
 router.use("/api", api);
 
 auth.post("/login", login);
+auth.post("/refresh", authenticateToken, refreshToken); // get a new access token
 
 api.post("/messages", createMessage);
 api.get("/messages", getMessages);

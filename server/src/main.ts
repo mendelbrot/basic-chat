@@ -3,6 +3,7 @@ import http from "http";
 import { Server } from "socket.io";
 import routes from "./routes";
 import cors from "cors";
+import { authenticateTokenWebsockets } from "./lib/auth";
 
 const port: number = Number(process.env.PORT) || 8000;
 const app: Express = express();
@@ -18,6 +19,8 @@ export const io = new Server(server, {
     origin: "*",
   },
 });
+
+io.use(authenticateTokenWebsockets);
 
 server.listen(port, () => {
   console.log(`Server running on port ${port}.`);

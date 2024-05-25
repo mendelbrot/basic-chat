@@ -39,3 +39,14 @@ export async function login(req: Request, res: Response) {
     res.status(500).json({ error: "Internal server error." });
   }
 }
+
+export async function refreshToken(req: Request, res: Response) {
+  try {
+    const newToken = signToken(req.user as User);
+    res.header("authorization", `Bearer ${newToken}`);
+    res.status(201).end();
+  } catch (error) {
+    console.log("refresh token error", error);
+    res.status(500).json({ error: "Internal server error." });
+  }
+}
