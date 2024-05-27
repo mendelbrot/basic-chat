@@ -24,7 +24,7 @@ function MessageInput() {
         </div>
         <div className="flex-1">
           <textarea
-            name="message"
+            data-cy="message-input"
             className="w-full block outline-none py-4 px-4 bg-transparent"
             rows={1}
             autoFocus={true}
@@ -56,6 +56,7 @@ function MessageInput() {
             <button
               className="bg-blue-400 w-10 h-10 rounded-full inline-block"
               disabled={draft === ""}
+              data-cy="send-message-button"
               onClick={() => store.dispatch(sendMessage())}
             >
               <span className="inline-block align-text-bottom">
