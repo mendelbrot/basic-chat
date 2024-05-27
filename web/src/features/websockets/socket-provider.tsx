@@ -11,7 +11,7 @@ type Props = {
 
 const SocketProvider = ({ children }: Props) => {
   const [isConnected, setIsConnected] = React.useState(false);
-  const [lastMessageEvent, setLastMessageEvent] = React.useState(null);
+  const [lastMessageEvent, setLastMessageEvent] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     function onConnect() {
@@ -23,7 +23,7 @@ const SocketProvider = ({ children }: Props) => {
       setIsConnected(false);
     }
 
-    function onBroadcastMessageCreate(value) {
+    function onBroadcastMessageCreate(value: string | null) {
       setLastMessageEvent(value);
       store.dispatch(loadMessages());
     }

@@ -1,8 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { User } from "./user-type";
 
-const initialState: { draft: string; Users: User[] } = {
-  draft: "",
+const initialState: { Users: User[] } = {
   Users: [],
 };
 
