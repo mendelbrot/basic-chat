@@ -23,7 +23,7 @@ export async function createUser(req: Request, res: Response) {
     ) {
       res
         .status(409)
-        .json({ message: `Username ${username} is already taken.` });
+        .json({ error: `Username ${username} is already taken.` });
       return;
     }
 
@@ -31,7 +31,7 @@ export async function createUser(req: Request, res: Response) {
 
     if (!passwordValidation.valid) {
       res.status(400).json({
-        message: `Password does not meet requirements: ${passwordValidation.message}`,
+        error: `Password does not meet requirements: ${passwordValidation.message}`,
       });
       return;
     }

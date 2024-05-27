@@ -22,7 +22,7 @@ describe("create user", () => {
         password: "password",
       });
     expect(res.statusCode).to.equal(401);
-    expect(res.body).to.have.key("message");
+    expect(res.body).to.have.key("error");
   });
 
   it("should 409 if username is taken", async () => {
@@ -34,7 +34,7 @@ describe("create user", () => {
         password: "password",
       });
     expect(res.statusCode).to.equal(409);
-    expect(res.body).to.have.key("message");
+    expect(res.body).to.have.key("error");
   });
 
   it("should 400 if password is too weak", async () => {
@@ -46,7 +46,7 @@ describe("create user", () => {
         password: "weakpw",
       });
     expect(res.statusCode).to.equal(400);
-    expect(res.body).to.have.key("message");
+    expect(res.body).to.have.key("error");
   });
 
   it("should 201 return the new user if all inputs are valid", async () => {

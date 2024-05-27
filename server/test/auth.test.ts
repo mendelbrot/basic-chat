@@ -5,25 +5,27 @@ import { publicUserFields } from "../src/models/users.model";
 
 describe("sign in", () => {
   it("should 401 if username is incorrect", async () => {
-    const res = await supertest(app).post("/api/auth/login").send({
+    const res = await supertest(app).post("/auth/login").send({
       username: "soandso",
       password: "password",
     });
     expect(res.statusCode).to.equal(401);
     expect(res.header["authorization"]).to.be.undefined;
+    expect(res.body).to.have.key("error");
   });
 
   it("should 401 if password is incorrect", async () => {
-    const res = await supertest(app).post("/api/auth/login").send({
+    const res = await supertest(app).post("/auth/login").send({
       username: "user1",
       password: "wrongpassword",
     });
     expect(res.statusCode).to.equal(401);
     expect(res.header["authorization"]).to.be.undefined;
+    expect(res.body).to.have.key("error");
   });
 
   it("should 200 provide token if credentials are correct", async () => {
-    const res = await supertest(app).post("/api/auth/login").send({
+    const res = await supertest(app).post("/auth/login").send({
       username: "user1",
       password: "password",
     });
@@ -34,7 +36,7 @@ describe("sign in", () => {
   });
 
   it("should 200 return the public user fields in the body if credentials are correct", async () => {
-    const res = await supertest(app).post("/api/auth/login").send({
+    const res = await supertest(app).post("/auth/login").send({
       username: "user1",
       password: "password",
     });

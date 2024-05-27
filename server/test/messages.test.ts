@@ -20,7 +20,7 @@ describe("get messages", () => {
       .get("/api/messages")
       .set("authorization", `Bearer invalidtoken`);
     expect(res.statusCode).to.equal(401);
-    expect(res.body).to.have.all.keys(["message"]);
+    expect(res.body).to.have.key("error");
   });
 
   it("should 200 return a list of messages", async () => {
