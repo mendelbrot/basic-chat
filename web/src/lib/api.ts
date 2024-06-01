@@ -2,7 +2,7 @@ import { UserCredentials } from "../features/auth/auth-types";
 import { Message } from "../features/chat/message-type";
 import { User } from "../features/user/user-type";
 
-const baseURL = "http://localhost:8000";
+const baseURL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 async function login(
   credentials: UserCredentials
