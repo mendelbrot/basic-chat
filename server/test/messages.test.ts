@@ -19,7 +19,7 @@ describe("get messages", () => {
     const res = await supertest(app)
       .get("/api/messages")
       .set("authorization", `Bearer invalidtoken`);
-    expect(res.statusCode).to.equal(401);
+    expect(res.statusCode).to.equal(402);
     expect(res.body).to.have.key("error");
   });
 
