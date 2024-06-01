@@ -1,9 +1,6 @@
 import { io } from "socket.io-client";
 
-const URL =
-  process.env.NODE_ENV === "production"
-    ? window.location.href
-    : "http://localhost:8000";
+const URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 const socket = io(URL, {
   autoConnect: false,
