@@ -1,4 +1,4 @@
-name: Fly Deploy
+name: Fly Deploy Server
 on:
   push:
     branches:
