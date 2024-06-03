@@ -17,7 +17,7 @@ export function signToken(user: User): string {
     { sub: user.id, username: user.username },
     process.env.SECRET as string,
     {
-      expiresIn: "30d",
+      expiresIn: "365d",
     }
   );
 }

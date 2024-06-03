@@ -7,7 +7,7 @@ const baseURL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 async function login(
   credentials: UserCredentials
 ): Promise<{ user: User; token: string }> {
-  const request = new Request(`${baseURL}/auth/login`, {
+  const request = new Request(`${baseURL}/api/auth/login`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -19,11 +19,10 @@ async function login(
   const response = await fetch(request);
 
   if (response.status !== 200) {
-    throw new Error(`/auth/login response status ${response.status}`);
+    throw new Error(`login response status ${response.status}`);
   }
 
-  const user = await response.json();
-  const token = response.headers.get("authorization");
+  const { user, token } = await response.json();
 
   if (!user || !token) {
     throw new Error("user or token not supplied");

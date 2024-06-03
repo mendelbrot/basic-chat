@@ -49,7 +49,7 @@ describe("create user", () => {
     expect(res.body).to.have.key("error");
   });
 
-  it("should 201 return the new user if all inputs are valid", async () => {
+  it("should 201 return the new user", async () => {
     const res = await supertest(app)
       .post("/api/users")
       .set("authorization", `Bearer ${userTokenInstance.token}`)
@@ -58,23 +58,31 @@ describe("create user", () => {
         password: "password",
       });
     expect(res.statusCode).to.equal(201);
-    expect(res.body).to.have.all.keys(publicUserFields);
+    expect(res.body).to.have.keys(publicUserFields);
   });
+});
+
+describe("get me", () => {
+  before(loadToken);
 
   it("should get the current user", async () => {
     const res = await supertest(app)
       .get("/api/users/me")
       .set("authorization", `Bearer ${userTokenInstance.token}`)
     expect(res.statusCode).to.equal(200);
-    expect(res.body).to.have.all.keys(publicUserFields);
+    expect(res.body).to.have.keys(publicUserFields);
   });
+});
+
+describe("get users", () => {
+  before(loadToken);
 
   it("should 200 return a list of users", async () => {
     const res = await supertest(app)
       .get("/api/users")
       .set("authorization", `Bearer ${userTokenInstance.token}`);
     expect(res.statusCode).to.equal(200);
-    expect(res.body[0]).to.have.all.keys(publicUserFields);
+    expect(res.body[0]).to.have.keys(publicUserFields);
     expect(res.body[0]).to.not.have.key("password")
   });
 });

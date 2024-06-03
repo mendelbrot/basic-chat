@@ -5,22 +5,15 @@ import { authenticateToken } from "./lib/auth";
 import { getMe, getUsers, createUser } from "./controllers/users.controller";
 
 const router: Router = express.Router();
-const auth: Router = express.Router();
-const api: Router = express.Router();
 
-api.use(authenticateToken);
+router.post("/api/auth/login", login);
+router.post("/api/auth/refresh-token", authenticateToken, refreshToken); // get a new access token
 
-router.use("/auth", auth);
-router.use("/api", api);
+router.post("/api/messages", authenticateToken, createMessage);
+router.get("/api/messages", authenticateToken, getMessages);
 
-auth.post("/login", login);
-auth.post("/refresh", authenticateToken, refreshToken); // get a new access token
-
-api.post("/messages", createMessage);
-api.get("/messages", getMessages);
-
-api.get("/users/me", getMe); // get the currently signed in user
-api.post("/users", createUser);
-api.get("/users", getUsers);
+router.get("/api/users/me", authenticateToken, getMe); // get the currently signed in user
+router.post("/api/users", authenticateToken, createUser);
+router.get("/api/users", authenticateToken, getUsers);
 
 export default router;
