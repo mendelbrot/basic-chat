@@ -1,12 +1,11 @@
-import { UserCredentials } from "../features/auth/auth-types";
-import { Message } from "../features/chat/message-type";
-import { User } from "../features/user/user-type";
+import { Session, UserCredentials } from "./auth/ctx";
+import { Message } from "../types/message-type";
+import { User } from "../types/user-type";
+import React from "react";
 
-const baseURL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const baseURL = process.env.API_URL || "http://localhost:8000";
 
-async function login(
-  credentials: UserCredentials
-): Promise<{ user: User; token: string }> {
+const login = async (credentials: UserCredentials): Promise<Session> => {
   const request = new Request(`${baseURL}/api/auth/login`, {
     method: "POST",
     headers: {
@@ -18,14 +17,14 @@ async function login(
 
   const response = await fetch(request);
 
-  if (response.status !== 200) {
-    throw new Error(`login response status ${response.status}`);
+  const { user, token, error } = await response.json();
+
+  if (error) {
+    throw new Error(error);
   }
 
-  const { user, token } = await response.json();
-
   if (!user || !token) {
-    throw new Error("user or token not supplied");
+    throw new Error("user or token not returned from server");
   }
 
   return {
@@ -34,7 +33,7 @@ async function login(
   };
 }
 
-async function loadMessages(): Promise<Array<Message>> {
+const loadMessages = async (): Promise<Array<Message>> => {
   const request = new Request(`${baseURL}/api/messages`, {
     method: "GET",
     headers: {
@@ -54,7 +53,7 @@ async function loadMessages(): Promise<Array<Message>> {
   return messages;
 }
 
-async function sendMessage(content: string): Promise<Message> {
+const sendMessage = async (content: string): Promise<Message> => {
   const request = new Request(`${baseURL}/api/messages`, {
     method: "POST",
     headers: {
