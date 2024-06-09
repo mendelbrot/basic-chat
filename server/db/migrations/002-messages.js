@@ -7,8 +7,8 @@ module.exports = {
     await queryInterface.sequelize.query(
       `CREATE TABLE messages (
         id SERIAL PRIMARY KEY,
-        content TEXT,
-        user_id INT REFERENCES users(id),
+        text TEXT,
+        sender_id INT REFERENCES users(id),
         created_at TIMESTAMPTZ NOT NULL,
         updated_at TIMESTAMPTZ NOT NULL
       );`,

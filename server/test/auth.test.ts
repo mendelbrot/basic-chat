@@ -17,8 +17,8 @@ describe("login", () => {
       password: "password",
     });
     expect(res.statusCode).to.equal(401);
-    expect(res.body).to.not.have.key("token");
-    expect(res.body).to.have.key("error");
+    expect(res.body).to.not.include.keys(["data"]);
+    expect(res.body).to.include.keys(["error"]);
   });
 
   it("should 401 if password is incorrect", async () => {
@@ -27,7 +27,7 @@ describe("login", () => {
       password: "wrongpassword",
     });
     expect(res.statusCode).to.equal(401);
-    expect(res.body).to.not.include.keys(["token"]);
+    expect(res.body).to.not.include.keys(["data"]);
     expect(res.body).to.include.keys(["error"]);
   });
 
@@ -37,13 +37,14 @@ describe("login", () => {
       password: "password",
     });
     expect(res.statusCode).to.equal(200);
-    expect(res.body).to.include.keys(["token"]);
-    expect(res.body).to.include.keys(["user"]);
+    expect(res.body).to.include.keys(["data"]);
     expect(res.body).to.not.include.keys(["error"]);
-    expect(res.body.token).to.be.a("string");
-    expect(res.body.user).to.not.include.keys(["password"]);
-    expect(res.body.user).to.have.keys(publicUserFields);
-    expect(res.body.user.activeAt).to.be.a.string;
+    expect(res.body.data).to.include.keys(["token"]);
+    expect(res.body.data).to.include.keys(["user"]);
+    expect(res.body.data.token).to.be.a("string");
+    expect(res.body.data.user).to.not.include.keys(["password"]);
+    expect(res.body.data.user).to.include.keys(publicUserFields);
+    expect(res.body.data.user.activeAt).to.be.a.string;
   });
 });
 
@@ -55,7 +56,7 @@ describe("refresh-token", () => {
       .post("/api/auth/refresh-token")
       .set("authorization", `Bearer invalidtoken`);
     expect(res.statusCode).to.equal(401);
-    expect(res.body).to.not.include.keys(["token"]);
+    expect(res.body).to.not.include.keys(["data"]);
     expect(res.body).to.include.keys(["error"]);
   });
 
@@ -64,8 +65,9 @@ describe("refresh-token", () => {
       .post("/api/auth/refresh-token")
       .set("authorization", `Bearer ${userTokenInstance.token}`);
     expect(res.statusCode).to.equal(200);
-    expect(res.body).to.include.keys(["token"]);
+    expect(res.body).to.include.keys(["data"]);
     expect(res.body).to.not.include.keys(["error"]);
-    expect(res.body.token).to.be.a("string");
+    expect(res.body.data).to.include.keys(["token"]);
+    expect(res.body.data.token).to.be.a("string");
   });
 });

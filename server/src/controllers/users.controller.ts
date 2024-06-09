@@ -4,7 +4,7 @@ import { hashPassword, validatePasswordRequirements } from "../lib/auth";
 
 export async function getMe(req: Request, res: Response) {
   try {
-    res.status(200).json(req.user);
+    res.status(200).json({ data: req.user });
   } catch (error) {
     console.log("getMe error", error);
     res.status(500).json({ error: "Internal server error." });
@@ -21,9 +21,7 @@ export async function createUser(req: Request, res: Response) {
         attributes: ["username"],
       })
     ) {
-      res
-        .status(409)
-        .json({ error: `Username ${username} is already taken.` });
+      res.status(409).json({ error: `Username ${username} is already taken.` });
       return;
     }
 
@@ -46,9 +44,9 @@ export async function createUser(req: Request, res: Response) {
       attributes: publicUserFields,
     });
 
-    res.status(201).json(publicUser);
+    res.status(201).json({ data: publicUser });
   } catch (error) {
-    console.log("createUser error", error);
+    console.log("createUser error: ", error);
     res.status(500).json({ error: "Internal server error." });
   }
 }
@@ -56,9 +54,9 @@ export async function createUser(req: Request, res: Response) {
 export async function getUsers(req: Request, res: Response) {
   try {
     const users = await User.findAll({ attributes: publicUserFields });
-    res.status(200).json(users);
+    res.status(200).json({ data: users });
   } catch (error) {
-    console.log("getUsers error", error);
+    console.log("getUsers error: ", error);
     res.status(500).json({ error: "Internal server error." });
   }
 }

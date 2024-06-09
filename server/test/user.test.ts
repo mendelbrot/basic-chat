@@ -22,7 +22,8 @@ describe("create user", () => {
         password: "password",
       });
     expect(res.statusCode).to.equal(401);
-    expect(res.body).to.have.key("error");
+    expect(res.body).to.not.include.keys(["data"]);
+    expect(res.body).to.include.keys(["error"]);
   });
 
   it("should 409 if username is taken", async () => {
@@ -34,7 +35,8 @@ describe("create user", () => {
         password: "password",
       });
     expect(res.statusCode).to.equal(409);
-    expect(res.body).to.have.key("error");
+    expect(res.body).to.not.include.keys(["data"]);
+    expect(res.body).to.include.keys(["error"]);
   });
 
   it("should 400 if password is too weak", async () => {
@@ -46,7 +48,8 @@ describe("create user", () => {
         password: "weakpw",
       });
     expect(res.statusCode).to.equal(400);
-    expect(res.body).to.have.key("error");
+    expect(res.body).to.not.include.keys(["data"]);
+    expect(res.body).to.include.keys(["error"]);
   });
 
   it("should 201 return the new user", async () => {
@@ -58,7 +61,9 @@ describe("create user", () => {
         password: "password",
       });
     expect(res.statusCode).to.equal(201);
-    expect(res.body).to.have.keys(publicUserFields);
+    expect(res.body).to.include.keys(["data"]);
+    expect(res.body).to.not.include.keys(["error"]);
+    expect(res.body.data).to.include.keys(publicUserFields);
   });
 });
 
@@ -70,7 +75,9 @@ describe("get me", () => {
       .get("/api/users/me")
       .set("authorization", `Bearer ${userTokenInstance.token}`)
     expect(res.statusCode).to.equal(200);
-    expect(res.body).to.have.keys(publicUserFields);
+    expect(res.body).to.include.keys(["data"]);
+    expect(res.body).to.not.include.keys(["error"]);
+    expect(res.body.data).to.include.keys(publicUserFields);
   });
 });
 
@@ -81,8 +88,10 @@ describe("get users", () => {
     const res = await supertest(app)
       .get("/api/users")
       .set("authorization", `Bearer ${userTokenInstance.token}`);
-    expect(res.statusCode).to.equal(200);
-    expect(res.body[0]).to.have.keys(publicUserFields);
-    expect(res.body[0]).to.not.have.key("password")
+    expect(res.statusCode).to.equal(200)
+    expect(res.body).to.include.keys(["data"]);
+    expect(res.body).to.not.include.keys(["error"]);;
+    expect(res.body.data[0]).to.include.keys(publicUserFields);
+    expect(res.body.data[0]).to.not.include.keys(["password"])
   });
 });

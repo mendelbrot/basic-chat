@@ -4,16 +4,16 @@ import User from './users.model';
 
 export const publicMessageFields = [
   "id",
-  "content",
-  "userId",
+  "text",
+  "senderId",
   "createdAt",
   "updatedAt",
 ];
 
 class Message extends Model {
   declare id: number;
-  declare message: string;
-  declare userId: string;
+  declare text: string;
+  declare senderId: string;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 }
@@ -25,7 +25,7 @@ Message.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    content: {
+    text: {
       type: DataTypes.TEXT,
     },
   },
@@ -36,7 +36,7 @@ Message.init(
 );
 
 Message.belongsTo(User, {
-  foreignKey: 'userId',
+  foreignKey: 'senderId',
 });
 
 

@@ -32,7 +32,7 @@ module.exports = {
     const user2 = result2[0][0].id;
 
     await queryInterface.sequelize.query(
-      `INSERT INTO messages (content, user_id, created_at, updated_at)
+      `INSERT INTO messages (text, sender_id, created_at, updated_at)
       VALUES ('hello', :user1, NOW(), NOW());`,
       {
         replacements: { user1: user1 },
@@ -41,7 +41,7 @@ module.exports = {
     );
 
     await queryInterface.sequelize.query(
-      `INSERT INTO messages (content, user_id, created_at, updated_at)
+      `INSERT INTO messages (text, sender_id, created_at, updated_at)
       VALUES ('hi!', :user2, NOW(), NOW());`,
       {
         replacements: { user2: user2 },

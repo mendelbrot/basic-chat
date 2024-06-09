@@ -33,11 +33,11 @@ export async function login(req: Request, res: Response) {
       attributes: publicUserFields,
     });
 
-    const resJson = { token: token, user: publicUser };
+    const resJson = { data: { token: token, user: publicUser } };
 
     res.status(200).json(resJson);
   } catch (error) {
-    console.log("login error", error);
+    console.log("login error: ", error);
     res.status(500).json({ error: "Internal server error." });
   }
 }
@@ -45,9 +45,9 @@ export async function login(req: Request, res: Response) {
 export async function refreshToken(req: Request, res: Response) {
   try {
     const newToken = signToken(req.user as User);
-    res.status(200).json({ token: newToken });
+    res.status(200).json({ data: { token: newToken } });
   } catch (error) {
-    console.log("refresh token error", error);
+    console.log("refresh token error: ", error);
     res.status(500).json({ error: "Internal server error." });
   }
 }
