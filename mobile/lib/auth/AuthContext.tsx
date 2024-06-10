@@ -115,5 +115,7 @@ export const SessionProvider = (props: PropsWithChildren) => {
   );
 };
 
+export default AuthContext;
+
 // https://blog.logrocket.com/authentication-react-router-v6/
 // https://docs.expo.dev/router/reference/authentication/
