@@ -63,10 +63,7 @@ const useStorageState = <J extends JSONValue>(
     [key]
   );
 
-  return useMemo(
-    () => [isLoading, storageState, setStorageState],
-    [isLoading, storageState, key]
-  );
+  return [isLoading, storageState, setStorageState];
 };
 
 export default useStorageState;

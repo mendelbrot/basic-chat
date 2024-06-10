@@ -7,7 +7,7 @@ import React, {
   useState,
 } from "react";
 import useStorageState from "@/lib/useStorageState";
-import { User } from "@/lib/users/user-type";
+import { User } from "@/lib/MainContext";
 import api from "../api";
 
 export type Session = {

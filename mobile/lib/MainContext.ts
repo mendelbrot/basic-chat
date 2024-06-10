@@ -28,79 +28,167 @@ export type FailedMessage = { text: string };
 
 export type UsernameLookup = { [key: number]: string };
 
+export type LoadingState = "users" | "messages" | "everything";
+
 type MainContextValue = {
   messages: Message[];
   failedMessages: FailedMessage[];
   users: [];
   usernameLookup: UsernameLookup;
   error: string | null;
-  isLoadingMessages: boolean;
-  isLoadingUsers: boolean;
-  isLoadingEverything: boolean;
-  isLoading: boolean;
-  sendMessage: ({ text }: { text: string }) => void;
-  resendFailedMessage: (index: number) => void;
-  deleteFailedMessage: (index: number) => void;
-  fetchMessages: () => void;
-  fetchUsers: () => void;
-  fetchEverything: () => void;
+  loadingState: LoadingState | null;
 };
 
-const MainContext = createContext<MainContextValue>({
+const mainContextInitialState: MainContextValue = {
   messages: [],
   failedMessages: [],
   users: [],
   usernameLookup: {},
   error: null,
-  isLoadingMessages: false,
-  isLoadingUsers: false,
-  isLoadingEverything: false,
-  isLoading: false,
-  sendMessage: (_obj) => {},
-  resendFailedMessage: (_index) => {},
-  deleteFailedMessage: (_index) => {},
-  fetchMessages: () => {},
-  fetchUsers: () => {},
-  fetchEverything: () => {},
-});
+  loadingState: null,
+}
 
-type FetchMessagesAction = {
-  type: "fetchMessages";
-  payload: { messages: Message[] };
+const MainContext = createContext<MainContextValue>(mainContextInitialState);
+
+type Action1 = {
+  type: "loading:start";
+  payload: {
+    loadingState: LoadingState;
+  };
 };
-type FetchUsersAction = { type: "fetchUsers"; payload: { users: User[] } };
-type FetchEverythingAction = {
-  type: "fetchEverything";
-  payload: { messages: Message[]; users: User[] };
+
+type Action2 = {
+  type: "messages:fetch";
+  payload: {
+    messages: Message[];
+  };
 };
-type SendMessageAction = { type: "sendMessage"; payload: { message: Message } };
+
+type Action3 = {
+  type: "users:fetch";
+  payload: {
+    users: User[];
+  };
+};
+
+type Action4 = {
+  type: "everything:fetch";
+  payload: {
+    messages: Message[];
+    users: User[];
+  };
+};
+
+type Action5 = {
+  type: "message:send";
+  payload: {
+    message: Message;
+  };
+};
+
+type Action6 = {
+  type: "failed-message:delete";
+  payload: {
+    index: number;
+  };
+};
+
+type Action7 = {
+  type: "fetch-error:handle";
+  payload: {
+    error: string | null;
+  };
+};
+
+type Action8 = {
+  type: "message-send-error:handle";
+  payload: {
+    failedMessage: FailedMessage;
+    error: string | null;
+  };
+};
 
 type Action =
-  | FetchMessagesAction
-  | FetchUsersAction
-  | FetchEverythingAction
-  | SendMessageAction;
+  | Action1
+  | Action2
+  | Action3
+  | Action4
+  | Action5
+  | Action6
+  | Action7
+  | Action8;
 
-const mainReducer = (state: { messages: Message[] }, action: Action) => {
+const mainReducer = (state: MainContextValue, action: Action) => {
   switch (action.type) {
-    case "fetchMessages": {
-      return { ...state, messages: action.payload.messages };
+    case "loading:start": {
+      return {
+        ...state,
+        loadingState: action.payload.loadingState,
+        error: null,
+      };
     }
-    case "fetchUsers": {
+    case "messages:fetch": {
+      return {
+        ...state,
+        messages: action.payload.messages,
+        loadingState: null,
+      };
+    }
+    case "users:fetch": {
       const usernameLookup = action.payload.users.reduce((acc, item) => {
         acc[item.id] = item.username;
         return acc;
       }, {} as UsernameLookup);
-      return { ...state, users: action.payload.users, usernameLookup };
+      return {
+        ...state,
+        users: action.payload.users,
+        usernameLookup,
+        loadingState: null,
+      };
     }
-    case "fetchEverything": {
+    case "everything:fetch": {
       const usernameLookup = action.payload.users.reduce((acc, item) => {
         acc[item.id] = item.username;
         return acc;
       }, {} as UsernameLookup);
+      return {
+        ...state,
+        messages: action.payload.messages,
+        users: action.payload.users,
+        usernameLookup,
+        loadingState: null,
+      };
     }
-    case "sendMessage": {
-      return { ...state, messages: [...state.messages, action.payload] };
+    case "message:send": {
+      return {
+        ...state,
+        messages: [...state.messages, action.payload.message],
+        loadingState: null,
+      };
+    }
+    case "failed-message:delete": {
+      return {
+        ...state,
+        failedMessages: state.failedMessages.filter(
+          (_: any, index: number) => index !== action.payload.index
+        ),
+        loadingState: null,
+      };
+    }
+    case "fetch-error:handle": {
+      return {
+        ...state,
+        error: action.payload.error,
+        loadingState: null,
+      };
+    }
+    case "message-send-error:handle": {
+      return {
+        ...state,
+        failedMessages: [...state.messages, action.payload.failedMessage],
+        error: action.payload.error,
+        loadingState: null,
+      };
     }
     default: {
       return state;
@@ -109,7 +197,7 @@ const mainReducer = (state: { messages: Message[] }, action: Action) => {
 };
 
 export const MainProvider = (props: PropsWithChildren) => {
-  const [state, dispatch] = useReducer(mainReducer, { messages: [] });
+  const [state, dispatch] = useReducer<MainContextValue>(mainReducer, mainContextInitialState);
   const { session } = useContext(AuthContext);
 
   const token = session?.token;

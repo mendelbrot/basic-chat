@@ -1,4 +1,4 @@
-import JSONValue from "@/types/json-value-type";
+import { JSONValue } from "@/lib/useStorageState";
 
 const baseURL = process.env.API_URL || "http://localhost:8000";
 
