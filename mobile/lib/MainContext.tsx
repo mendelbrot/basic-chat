@@ -333,10 +333,7 @@ const sendMessage = async (
   });
 };
 
-const deleteFailedMessage = async (
-  dispatch: Dispatch<MainAction>,
-  index: number
-) => {
+const deleteFailedMessage = (dispatch: Dispatch<MainAction>, index: number) => {
   dispatch({ type: "failed-message:delete", payload: { index } });
 };
 
@@ -372,7 +369,7 @@ const resendFailedMessage = async (
   });
 };
 
-export const mainActioners = {
+export const mainDispatchers = {
   fetchMessages,
   fetchUsers,
   fetchEverything,

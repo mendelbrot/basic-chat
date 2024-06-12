@@ -49,7 +49,7 @@ const callServer = async (
       error,
     };
   } catch (error) {
-    return { error: "client or network error. Server was not reachable." };
+    return { error: "Client or network error: server was not reachable." };
   }
 };
 

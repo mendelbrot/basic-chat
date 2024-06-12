@@ -1,11 +1,13 @@
 import { Slot } from "expo-router";
 import { SessionProvider } from "@/lib/auth/AuthContext";
+import MainProvider from "@/lib/MainContext";
 
 export default function Root() {
-  // Set up the auth context and render our layout inside of it.
   return (
     <SessionProvider>
-      <Slot />
+      <MainProvider>
+        <Slot />
+      </MainProvider>
     </SessionProvider>
   );
 }

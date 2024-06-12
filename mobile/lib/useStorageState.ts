@@ -1,6 +1,6 @@
 import * as SecureStore from "expo-secure-store";
 import { deleteItemAsync, setItemAsync } from "expo-secure-store";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Platform } from "react-native";
 
 export type JSONValue =

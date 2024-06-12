@@ -5,6 +5,7 @@ import { io } from "../main";
 
 export async function getMessages(req: Request, res: Response) {
   try {
+    console.log('get')
     const messages = await Message.findAll({ attributes: publicMessageFields });
     res.status(200).json({ data: messages });
   } catch (error) {
@@ -15,6 +16,7 @@ export async function getMessages(req: Request, res: Response) {
 
 export async function createMessage(req: Request, res: Response) {
   try {
+    console.log('create')
     const { text } = req.body;
     const userId = (req.user as User).id;
 
@@ -25,7 +27,6 @@ export async function createMessage(req: Request, res: Response) {
       },
       { fields: publicMessageFields }
     );
-    console.log(message)
 
     io.emit("broadcast:message:create", JSON.stringify(message));
 

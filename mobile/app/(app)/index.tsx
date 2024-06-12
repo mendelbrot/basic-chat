@@ -1,8 +1,10 @@
-import { StyleSheet, View, Image } from "react-native";
+import ChatScreen from "@/lib/chat/ChatScreen";
+import { StyleSheet, View } from "react-native";
 
 export default function Index() {
   return (
     <View style={styles.container}>
+      <ChatScreen />
     </View>
   );
 }

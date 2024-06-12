@@ -1,24 +1,39 @@
-import React from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { useState } from "react";
+import { View, TextInput, Pressable, StyleSheet, Text } from "react-native";
+import { mainDispatchers, useMainDispatch } from "../MainContext";
+import { useSession } from "@/lib/auth/AuthContext";
 
-const InputBar = ({ inputMessageText, setInputMessageText, sendMessage }) => {
+const InputBar = () => {
+  const dispatch = useMainDispatch();
+  const { session } = useSession();
+  if (!session) {
+    return null;
+  }
+
+  const [inputMessageText, setInputMessageText] = useState("");
+
+  const send = () => {
+    mainDispatchers.sendMessage(dispatch, session.token, {
+      text: inputMessageText,
+    });
+  }
+
   return (
     <View style={styles.inputBar}>
       <TextInput
         style={styles.input}
         value={inputMessageText}
         onChangeText={setInputMessageText}
-        placeholder="Type your message..."
       />
-      <Button title="Send" onPress={sendMessage} />
+      <Pressable onPress={send}><Text>Send</Text></Pressable>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   inputBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 10,
     paddingVertical: 5,
   },
@@ -26,7 +41,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     padding: 8,
     borderRadius: 5,
   },

@@ -4,9 +4,8 @@ import {
   StyleSheet,
   View,
   TextInput,
-  Button,
+  Pressable,
   Text,
-  TouchableOpacity,
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 
@@ -35,13 +34,13 @@ const LoginForm = () => {
         value={password}
         secureTextEntry
       />
-      <Button title="Login" onPress={handleLogin} />
+      <Pressable onPress={handleLogin}><Text>Login</Text></Pressable>
       {loginError && (
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>{loginError}</Text>
-          <TouchableOpacity onPress={dismissLoginError}>
+          <Pressable onPress={dismissLoginError}>
             <Entypo name="cross" size={16} color="red" />
-          </TouchableOpacity>
+          </Pressable>
         </View>
       )}
     </View>
