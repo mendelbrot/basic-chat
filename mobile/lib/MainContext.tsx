@@ -27,7 +27,13 @@ export type DraftMessage = { text: string };
 
 export type UsernameLookup = { [key: number]: string };
 
-export type LoadingState = "users" | "messages" | "everything";
+export type WorkingState =
+  | "messages:fetch"
+  | "users:fetch"
+  | "everything:fetch"
+  | "message:send";
+
+export type SendingState = "message";
 
 export type MainState = {
   messages: Message[];
@@ -35,7 +41,7 @@ export type MainState = {
   users: User[];
   usernameLookup: UsernameLookup;
   error: string | null;
-  loadingState: LoadingState | null;
+  workingState: WorkingState | null;
 };
 
 const initialMainState: MainState = {
@@ -44,13 +50,13 @@ const initialMainState: MainState = {
   users: [],
   usernameLookup: {},
   error: null,
-  loadingState: null,
+  workingState: null,
 };
 
 type Action1 = {
-  type: "loading:start";
+  type: "working:start";
   payload: {
-    loadingState: LoadingState;
+    workingState: WorkingState;
   };
 };
 
@@ -91,13 +97,21 @@ type Action6 = {
 };
 
 type Action7 = {
-  type: "fetch-error:handle";
+  type: "failed-message:resend";
+  payload: {
+    message: Message;
+    index: number;
+  };
+};
+
+type Action8 = {
+  type: "general-error:handle";
   payload: {
     error: string | null;
   };
 };
 
-type Action8 = {
+type Action9 = {
   type: "message-send-error:handle";
   payload: {
     failedMessage: DraftMessage;
@@ -113,22 +127,23 @@ export type MainAction =
   | Action5
   | Action6
   | Action7
-  | Action8;
+  | Action8
+  | Action9;
 
 const mainReducer = (state: MainState, action: MainAction): MainState => {
   switch (action.type) {
-    case "loading:start": {
+    case "working:start": {
       return {
         ...state,
-        loadingState: action.payload.loadingState,
         error: null,
+        workingState: action.payload.workingState,
       };
     }
     case "messages:fetch": {
       return {
         ...state,
         messages: action.payload.messages,
-        loadingState: null,
+        workingState: null,
       };
     }
     case "users:fetch": {
@@ -140,7 +155,7 @@ const mainReducer = (state: MainState, action: MainAction): MainState => {
         ...state,
         users: action.payload.users,
         usernameLookup,
-        loadingState: null,
+        workingState: null,
       };
     }
     case "everything:fetch": {
@@ -153,14 +168,14 @@ const mainReducer = (state: MainState, action: MainAction): MainState => {
         messages: action.payload.messages,
         users: action.payload.users,
         usernameLookup,
-        loadingState: null,
+        workingState: null,
       };
     }
     case "message:send": {
       return {
         ...state,
         messages: [...state.messages, action.payload.message],
-        loadingState: null,
+        workingState: null,
       };
     }
     case "failed-message:delete": {
@@ -169,14 +184,24 @@ const mainReducer = (state: MainState, action: MainAction): MainState => {
         failedMessages: state.failedMessages.filter(
           (_: any, index: number) => index !== action.payload.index
         ),
-        loadingState: null,
+        workingState: null,
       };
     }
-    case "fetch-error:handle": {
+    case "failed-message:resend": {
+      return {
+        ...state,
+        messages: [...state.messages, action.payload.message],
+        failedMessages: state.failedMessages.filter(
+          (_: any, index: number) => index !== action.payload.index
+        ),
+        workingState: null,
+      };
+    }
+    case "general-error:handle": {
       return {
         ...state,
         error: action.payload.error,
-        loadingState: null,
+        workingState: null,
       };
     }
     case "message-send-error:handle": {
@@ -184,7 +209,7 @@ const mainReducer = (state: MainState, action: MainAction): MainState => {
         ...state,
         failedMessages: [...state.messages, action.payload.failedMessage],
         error: action.payload.error,
-        loadingState: null,
+        workingState: null,
       };
     }
     default: {
@@ -194,47 +219,158 @@ const mainReducer = (state: MainState, action: MainAction): MainState => {
 };
 
 const fetchMessages = async (dispatch: Dispatch<MainAction>, token: string) => {
-  dispatch({ type: "loading:start", payload: { loadingState: "everything" } });
+  dispatch({
+    type: "working:start",
+    payload: { workingState: "messages:fetch" },
+  });
 
   const { error, data: messages } = await api.callServer(
     "GET",
     "messages",
     undefined,
-    token,
+    token
   );
 
   if (error) {
-    dispatch({ type: "fetch-error:handle", payload: { error } });
+    dispatch({ type: "general-error:handle", payload: { error } });
     return;
   }
 
-  dispatch({ type: "messages:fetch", payload: { messages: messages as Message[] } });
+  dispatch({
+    type: "messages:fetch",
+    payload: { messages: messages as Message[] },
+  });
 };
 
-const fetchUsers = async (dispatch: Dispatch<MainAction>, token: string) => {};
+const fetchUsers = async (dispatch: Dispatch<MainAction>, token: string) => {
+  dispatch({ type: "working:start", payload: { workingState: "users:fetch" } });
+
+  const { error, data: users } = await api.callServer(
+    "GET",
+    "users",
+    undefined,
+    token
+  );
+
+  if (error) {
+    dispatch({ type: "general-error:handle", payload: { error } });
+    return;
+  }
+
+  dispatch({ type: "users:fetch", payload: { users: users as User[] } });
+};
 
 const fetchEverything = async (
   dispatch: Dispatch<MainAction>,
   token: string
-) => {};
+) => {
+  dispatch({
+    type: "working:start",
+    payload: { workingState: "everything:fetch" },
+  });
+
+  const { error: messagesError, data: messages } = await api.callServer(
+    "GET",
+    "messages",
+    undefined,
+    token
+  );
+
+  if (messagesError) {
+    dispatch({
+      type: "general-error:handle",
+      payload: { error: messagesError },
+    });
+    return;
+  }
+
+  const { error: usersError, data: users } = await api.callServer(
+    "GET",
+    "users",
+    undefined,
+    token
+  );
+
+  if (usersError) {
+    dispatch({ type: "general-error:handle", payload: { error: usersError } });
+    return;
+  }
+
+  dispatch({
+    type: "everything:fetch",
+    payload: { messages: messages as Message[], users: users as User[] },
+  });
+};
 
 const sendMessage = async (
   dispatch: Dispatch<MainAction>,
   token: string,
   draft: DraftMessage
-) => {};
+) => {
+  dispatch({
+    type: "working:start",
+    payload: { workingState: "message:send" },
+  });
+
+  const { error, data: message } = await api.callServer(
+    "POST",
+    "messages",
+    draft,
+    token
+  );
+
+  if (error) {
+    dispatch({
+      type: "message-send-error:handle",
+      payload: { error, failedMessage: draft as DraftMessage },
+    });
+    return;
+  }
+
+  dispatch({
+    type: "message:send",
+    payload: { message: message as Message },
+  });
+};
 
 const deleteFailedMessage = async (
   dispatch: Dispatch<MainAction>,
-  token: string,
   index: number
-) => {};
+) => {
+  dispatch({ type: "failed-message:delete", payload: { index } });
+};
 
 const resendFailedMessage = async (
   dispatch: Dispatch<MainAction>,
+  state: MainState,
   token: string,
   index: number
-) => {};
+) => {
+  dispatch({
+    type: "working:start",
+    payload: { workingState: "message:send" },
+  });
+
+  const { error, data: message } = await api.callServer(
+    "POST",
+    "messages",
+    state.failedMessages[index],
+    token
+  );
+
+  if (error) {
+    dispatch({
+      type: "general-error:handle",
+      payload: { error },
+    });
+    return;
+  }
+
+  dispatch({
+    type: "failed-message:resend",
+    payload: { message: message as Message, index },
+  });
+};
 
 export const mainActioners = {
   fetchMessages,
