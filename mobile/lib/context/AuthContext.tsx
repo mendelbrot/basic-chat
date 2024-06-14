@@ -7,7 +7,7 @@ import React, {
   useState,
 } from "react";
 import useStorageState from "@/lib/useStorageState";
-import { User } from "@/lib/MainContext";
+import { User } from "@/lib/context/MainContext";
 import api from "../api";
 
 export type Session = {
@@ -29,7 +29,7 @@ export type AuthContextValue = {
   session: Session | null;
 };
 
-const AuthContext = createContext<AuthContextValue>({
+export const AuthContext = createContext<AuthContextValue>({
   login: async (_credentials) => {},
   logout: () => {},
   dismissLoginError: () => {},
@@ -38,11 +38,11 @@ const AuthContext = createContext<AuthContextValue>({
   session: null,
 });
 
-export const useSession = () => {
+export const useAuth = () => {
   return useContext(AuthContext);
 };
 
-export const SessionProvider = (props: PropsWithChildren) => {
+const AuthProvider = (props: PropsWithChildren) => {
   const [sessionIsLoading, session, setSession] =
     useStorageState<Session>("session");
   const [loginIsLoading, setLoginIsLoading] = useState<boolean>(false);
@@ -108,7 +108,7 @@ export const SessionProvider = (props: PropsWithChildren) => {
   );
 };
 
-export default AuthContext;
+export default AuthProvider;
 
 // https://blog.logrocket.com/authentication-react-router-v6/
 // https://docs.expo.dev/router/reference/authentication/

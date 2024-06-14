@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { FlatList, StyleSheet } from "react-native";
 import Message from "./Message";
-import { mainDispatchers, useMain, useMainDispatch } from "../MainContext";
-import { useSession } from "../auth/AuthContext";
+import { mainDispatchers, useMain, useMainDispatch } from "@/lib/context/MainContext";
+import { useAuth } from "@/lib/context/AuthContext";
 
 const MessageFeed = () => {
   const state = useMain();
   const dispatch = useMainDispatch();
-  const { session } = useSession();
+  const { session } = useAuth();
   if (!session) {
     return null;
   }
@@ -15,7 +15,6 @@ const MessageFeed = () => {
   useEffect(() => {
     mainDispatchers.fetchEverything(dispatch, session.token);
   }, []);
-
 
   return (
     <FlatList

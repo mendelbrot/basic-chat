@@ -1,13 +1,16 @@
 import { Slot } from "expo-router";
-import { SessionProvider } from "@/lib/auth/AuthContext";
-import MainProvider from "@/lib/MainContext";
+import AuthProvider from "@/lib/context/AuthContext";
+import MainProvider from "@/lib/context/MainContext";
+import SocketProvider from "@/lib/context/SocketContext";
 
 export default function Root() {
   return (
-    <SessionProvider>
+    <AuthProvider>
       <MainProvider>
-        <Slot />
+        <SocketProvider>
+          <Slot />
+        </SocketProvider>
       </MainProvider>
-    </SessionProvider>
+    </AuthProvider>
   );
 }

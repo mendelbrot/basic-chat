@@ -1,6 +1,9 @@
 import { JSONValue } from "@/lib/useStorageState";
+import p from "@/lib/parameters";
+import { storage } from "@/lib/useStorageState";
+import { Session } from "./context/AuthContext";
 
-const baseURL = process.env.API_URL || "http://localhost:8000";
+const baseURL = p.serverURL;
 
 export type CallServerReturnValue = {
   error?: string | null;
@@ -11,7 +14,7 @@ const callServer = async (
   method: string,
   path: string,
   body: JSONValue | undefined = undefined,
-  token: string | null | undefined = undefined
+  token: "USE_SESSION_TOKEN" | string | null | undefined = undefined
 ): Promise<CallServerReturnValue> => {
   try {
     const headers = new Headers({
@@ -20,7 +23,15 @@ const callServer = async (
     });
 
     if (token) {
-      headers.set("Authorization", token);
+      if (token === "USE_STORAGE_TOKEN") {
+        const session = await storage.getItem<Session>("session");
+        if (!session) {
+          return { error: "Session token not found: session is null." };
+        }
+        headers.set("Authorization", session.token)
+      } else {
+        headers.set("Authorization", token);
+      }
     }
 
     const requestSettings: RequestInit = {
@@ -54,7 +65,7 @@ const callServer = async (
 };
 
 const api = {
-  callServer
+  callServer,
 };
 
 export default api;

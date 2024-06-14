@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
-import { Message as MessageType } from "../MainContext";
+import { Message as MessageType } from "@/lib/context/MainContext";
 
 type Props = {
   message: MessageType;

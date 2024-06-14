@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { StyleSheet, KeyboardAvoidingView } from "react-native";
 import MessageFeed from "./MessageFeed";
 import InputBar from "./InputBar";

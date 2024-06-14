@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { View, TextInput, Pressable, StyleSheet, Text } from "react-native";
-import { mainDispatchers, useMainDispatch } from "../MainContext";
-import { useSession } from "@/lib/auth/AuthContext";
+import { mainDispatchers, useMainDispatch } from "@/lib/context/MainContext";
+import { useAuth } from "@/lib/context/AuthContext";
 
 const InputBar = () => {
   const dispatch = useMainDispatch();
-  const { session } = useSession();
+  const { session } = useAuth();
   if (!session) {
     return null;
   }
@@ -16,7 +16,7 @@ const InputBar = () => {
     mainDispatchers.sendMessage(dispatch, session.token, {
       text: inputMessageText,
     });
-  }
+  };
 
   return (
     <View style={styles.inputBar}>
@@ -25,7 +25,9 @@ const InputBar = () => {
         value={inputMessageText}
         onChangeText={setInputMessageText}
       />
-      <Pressable onPress={send}><Text>Send</Text></Pressable>
+      <Pressable onPress={send}>
+        <Text>Send</Text>
+      </Pressable>
     </View>
   );
 };

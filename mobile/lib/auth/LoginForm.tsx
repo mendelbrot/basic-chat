@@ -1,18 +1,12 @@
-import { useSession } from "@/lib/auth/AuthContext";
+import { useAuth } from "@/lib/context/AuthContext";
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  TextInput,
-  Pressable,
-  Text,
-} from "react-native";
+import { StyleSheet, View, TextInput, Pressable, Text } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { login, loginError, dismissLoginError } = useSession();
+  const { login, loginError, dismissLoginError } = useAuth();
 
   const handleLogin = () => {
     login({ username, password });
@@ -34,7 +28,9 @@ const LoginForm = () => {
         value={password}
         secureTextEntry
       />
-      <Pressable onPress={handleLogin}><Text>Login</Text></Pressable>
+      <Pressable onPress={handleLogin}>
+        <Text>Login</Text>
+      </Pressable>
       {loginError && (
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>{loginError}</Text>
