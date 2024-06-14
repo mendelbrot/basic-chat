@@ -218,18 +218,13 @@ const mainReducer = (state: MainState, action: MainAction): MainState => {
   }
 };
 
-const fetchMessages = async (dispatch: Dispatch<MainAction>, token: string) => {
+const fetchMessages = async (dispatch: Dispatch<MainAction>) => {
   dispatch({
     type: "working:start",
     payload: { workingState: "messages:fetch" },
   });
 
-  const { error, data: messages } = await api.callServer(
-    "GET",
-    "messages",
-    undefined,
-    token
-  );
+  const { error, data: messages } = await api.callServer("GET", "messages");
 
   if (error) {
     dispatch({ type: "general-error:handle", payload: { error } });
@@ -242,15 +237,10 @@ const fetchMessages = async (dispatch: Dispatch<MainAction>, token: string) => {
   });
 };
 
-const fetchUsers = async (dispatch: Dispatch<MainAction>, token: string) => {
+const fetchUsers = async (dispatch: Dispatch<MainAction>) => {
   dispatch({ type: "working:start", payload: { workingState: "users:fetch" } });
 
-  const { error, data: users } = await api.callServer(
-    "GET",
-    "users",
-    undefined,
-    token
-  );
+  const { error, data: users } = await api.callServer("GET", "users");
 
   if (error) {
     dispatch({ type: "general-error:handle", payload: { error } });
@@ -260,10 +250,7 @@ const fetchUsers = async (dispatch: Dispatch<MainAction>, token: string) => {
   dispatch({ type: "users:fetch", payload: { users: users as User[] } });
 };
 
-const fetchEverything = async (
-  dispatch: Dispatch<MainAction>,
-  token: string
-) => {
+const fetchEverything = async (dispatch: Dispatch<MainAction>) => {
   dispatch({
     type: "working:start",
     payload: { workingState: "everything:fetch" },
@@ -271,9 +258,7 @@ const fetchEverything = async (
 
   const { error: messagesError, data: messages } = await api.callServer(
     "GET",
-    "messages",
-    undefined,
-    token
+    "messages"
   );
 
   if (messagesError) {
@@ -286,9 +271,7 @@ const fetchEverything = async (
 
   const { error: usersError, data: users } = await api.callServer(
     "GET",
-    "users",
-    undefined,
-    token
+    "users"
   );
 
   if (usersError) {
@@ -304,7 +287,6 @@ const fetchEverything = async (
 
 const sendMessage = async (
   dispatch: Dispatch<MainAction>,
-  token: string,
   draft: DraftMessage
 ) => {
   dispatch({
@@ -312,12 +294,9 @@ const sendMessage = async (
     payload: { workingState: "message:send" },
   });
 
-  const { error, data: message } = await api.callServer(
-    "POST",
-    "messages",
-    draft,
-    token
-  );
+  const { error, data: message } = await api.callServer("POST", "messages", {
+    body: draft,
+  });
 
   if (error) {
     dispatch({
@@ -340,7 +319,6 @@ const deleteFailedMessage = (dispatch: Dispatch<MainAction>, index: number) => {
 const resendFailedMessage = async (
   dispatch: Dispatch<MainAction>,
   state: MainState,
-  token: string,
   index: number
 ) => {
   dispatch({
@@ -348,12 +326,9 @@ const resendFailedMessage = async (
     payload: { workingState: "message:send" },
   });
 
-  const { error, data: message } = await api.callServer(
-    "POST",
-    "messages",
-    state.failedMessages[index],
-    token
-  );
+  const { error, data: message } = await api.callServer("POST", "messages", {
+    body: state.failedMessages[index],
+  });
 
   if (error) {
     dispatch({

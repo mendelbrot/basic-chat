@@ -57,7 +57,10 @@ const AuthProvider = (props: PropsWithChildren) => {
       const { error, data: session } = (await api.callServer(
         "POST",
         "auth/login",
-        credentials
+        {
+          body: credentials,
+          useTheSessionToken: false,
+        }
       )) as {
         error?: string | null;
         data?: Session | null;

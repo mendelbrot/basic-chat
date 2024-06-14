@@ -1,7 +1,11 @@
 import { useEffect } from "react";
 import { FlatList, StyleSheet } from "react-native";
 import Message from "./Message";
-import { mainDispatchers, useMain, useMainDispatch } from "@/lib/context/MainContext";
+import {
+  mainDispatchers,
+  useMain,
+  useMainDispatch,
+} from "@/lib/context/MainContext";
 import { useAuth } from "@/lib/context/AuthContext";
 
 const MessageFeed = () => {
@@ -13,7 +17,7 @@ const MessageFeed = () => {
   }
 
   useEffect(() => {
-    mainDispatchers.fetchEverything(dispatch, session.token);
+    mainDispatchers.fetchEverything(dispatch);
   }, []);
 
   return (

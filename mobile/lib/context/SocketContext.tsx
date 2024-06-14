@@ -34,31 +34,31 @@ export const SocketContext = createContext<SocketContextValue>(
 const SocketProvider = (props: PropsWithChildren) => {
   const [isConnected, setIsConnected] = useState(false);
   const [lastMessageEvent, setLastMessageEvent] = useState<string | null>(null);
-
-  const dispatch = useMainDispatch();
   const { session } = useAuth();
 
+  const dispatch = useMainDispatch();
+
+  function onConnect() {
+    setIsConnected(true);
+  }
+
+  function onDisconnect() {
+    setIsConnected(false);
+  }
+
+  function onBroadcastMessageCreate(value: string | null) {
+    setLastMessageEvent(value);
+    mainDispatchers.fetchMessages(dispatch);
+  }
+
   useEffect(() => {
-    function onConnect() {
-      setIsConnected(true);
-    }
-
-    function onDisconnect() {
-      setIsConnected(false);
-    }
-
-    function onBroadcastMessageCreate(value: string | null) {
-      setLastMessageEvent(value);
-      if (session) {
-        mainDispatchers.fetchMessages(dispatch, session.token);
-      }
-    }
-    
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
     socket.on("broadcast:message:create", onBroadcastMessageCreate);
 
-    socket.connect();
+    if (session) {
+      socket.connect();
+    }
 
     return () => {
       socket.off("connect", onConnect);

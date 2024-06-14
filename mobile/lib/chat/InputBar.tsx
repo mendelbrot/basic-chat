@@ -13,7 +13,7 @@ const InputBar = () => {
   const [inputMessageText, setInputMessageText] = useState("");
 
   const send = () => {
-    mainDispatchers.sendMessage(dispatch, session.token, {
+    mainDispatchers.sendMessage(dispatch, {
       text: inputMessageText,
     });
   };

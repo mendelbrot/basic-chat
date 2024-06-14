@@ -5,6 +5,12 @@ import { Session } from "./context/AuthContext";
 
 const baseURL = p.serverURL;
 
+export type CallServerOptions = {
+  body?: JSONValue | null;
+  token?: string | null;
+  useTheSessionToken?: boolean;
+};
+
 export type CallServerReturnValue = {
   error?: string | null;
   data?: JSONValue | null;
@@ -13,25 +19,30 @@ export type CallServerReturnValue = {
 const callServer = async (
   method: string,
   path: string,
-  body: JSONValue | undefined = undefined,
-  token: "USE_SESSION_TOKEN" | string | null | undefined = undefined
+  options: CallServerOptions = {}
 ): Promise<CallServerReturnValue> => {
+  // set the options defaults
+  if (typeof options.useTheSessionToken !== "boolean") {
+    options.useTheSessionToken = true;
+  }
+
   try {
     const headers = new Headers({
       Accept: "application/json",
       "Content-Type": "application/json",
     });
 
-    if (token) {
-      if (token === "USE_STORAGE_TOKEN") {
-        const session = await storage.getItem<Session>("session");
-        if (!session) {
-          return { error: "Session token not found: session is null." };
-        }
-        headers.set("Authorization", session.token)
-      } else {
-        headers.set("Authorization", token);
+    if (options.token && !options.useTheSessionToken) {
+      headers.set("Authorization", `Bearer ${options.token}`);
+    }
+
+    if (options.useTheSessionToken) {
+      const session = await storage.getItem<Session>("session");
+      if (!session) {
+        return { error: "Session token not found: session is null." };
       }
+      console.log("session.token", session.token);
+      headers.set("Authorization", `Bearer ${session.token}`);
     }
 
     const requestSettings: RequestInit = {
@@ -39,8 +50,8 @@ const callServer = async (
       headers,
     };
 
-    if (body) {
-      requestSettings.body = JSON.stringify(body);
+    if (options.body) {
+      requestSettings.body = JSON.stringify(options.body);
     }
 
     const request = new Request(`${baseURL}/api/${path}`, requestSettings);
