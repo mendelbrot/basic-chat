@@ -1,42 +1,37 @@
-name: Run Server Tests
+name: test
 on:
   push:
     branches:
       - dev
 
 jobs:
-  test:
+  test-node:
+    name: test node server
     runs-on: ubuntu-latest
 
     defaults:
       run:
-        working-directory: ./server
+        working-directory: ./node
 
     steps:
-      - name: Checkout Code
+      - name: checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: setup node
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
-      - name: Cache Node Modules
+      - name: cache node modules
         uses: actions/cache@v4
-        env:
-          cache-name: cache-node-modules
         with:
-          path: ./server/.npm 
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+          path: node_modules 
+          key: node-server-test-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Install Dependencies
+      - name: install dependencies
         run: npm ci
 
-      - name: Run Pretest and Test Scripts
+      - name: run pretest and test scripts
         run: |
           npm run db:test:restart
-          npm test
+          npm run test
