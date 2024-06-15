@@ -4,15 +4,17 @@ on:
     types: [closed]
     branches:
       - main
-      
+
 jobs:
   deploy-node-server:
     name: deploy node server
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
+
     defaults:
       run:
         working-directory: ./node
+
     steps:
       - name: checkout code
         uses: actions/checkout@v4
@@ -29,9 +31,11 @@ jobs:
     name: deploy frontend web
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
+
     defaults:
       run:
         working-directory: ./expo
+
     steps:
       - name: checkout code
         uses: actions/checkout@v4
@@ -39,14 +43,9 @@ jobs:
       - name: setup node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: "npm"
-
-      - name: cache node modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules 
-          key: expo-web-deploy-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          node-version: 20.x
+          cache: npm
+          cache-dependency-path: expo/package-lock.json
 
       - name: install dependencies (includes netlify as dev dependency)
         run: npm ci
@@ -61,7 +60,7 @@ jobs:
             --site ${{ secrets.NETLIFY_SITE_ID }} \
             --auth ${{ secrets.NETLIFY_API_TOKEN }} \
             --prod
-        
+
 # https://www.raulmelo.me/en/blog/deploying-netlify-github-actions-guide
 # https://docs.netlify.com/cli/get-started/
-      
+# https://docs.expo.dev/eas-update/github-actions/
