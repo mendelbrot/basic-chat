@@ -1,4 +1,4 @@
-name: netilify deploy expo web
+name: deploy
 on:
   pull_request:
     types: [closed]
@@ -6,7 +6,7 @@ on:
       - main
       
 jobs:
-  deploy-node:
+  deploy-node-server:
     name: deploy node server
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
@@ -48,21 +48,20 @@ jobs:
           path: node_modules 
           key: expo-web-deploy-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
-      - name: install netlify
-        run: npm install netlify-cli -g
-
-      - name: install dependencies
+      - name: install dependencies (includes netlify as dev dependency)
         run: npm ci
 
       - name: build project
         run: npm run build
 
-      - name: Deploy to Netlify
+      - name: deploy to netlify
         run: |
           netlify deploy \
             --dir dist \
             --site ${{ secrets.NETLIFY_SITE_ID }} \
             --auth ${{ secrets.NETLIFY_API_TOKEN }} \
             --prod
-
+        
+# https://www.raulmelo.me/en/blog/deploying-netlify-github-actions-guide
+# https://docs.netlify.com/cli/get-started/
       

@@ -1,4 +1,4 @@
-name: run node server tests
+name: test
 on:
   push:
     branches:
