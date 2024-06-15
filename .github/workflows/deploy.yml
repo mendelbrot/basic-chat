@@ -1,0 +1,68 @@
+name: netilify deploy expo web
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+      
+jobs:
+  deploy-node:
+    name: deploy node server
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    defaults:
+      run:
+        working-directory: ./node
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: set up fly
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: deploy fly from Dockerfile fly.toml
+        run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+  deploy-expo-web:
+    name: deploy frontend web
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    defaults:
+      run:
+        working-directory: ./expo
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: "npm"
+
+      - name: cache node modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules 
+          key: expo-web-deploy-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: install netlify
+        run: npm install netlify-cli -g
+
+      - name: install dependencies
+        run: npm ci
+
+      - name: build project
+        run: npm run build
+
+      - name: Deploy to Netlify
+        run: |
+          netlify deploy \
+            --dir dist \
+            --site ${{ secrets.NETLIFY_SITE_ID }} \
+            --auth ${{ secrets.NETLIFY_API_TOKEN }} \
+            --prod
+
+      

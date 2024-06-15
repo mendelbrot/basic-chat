@@ -21,12 +21,12 @@ const callServer = async (
   path: string,
   options: CallServerOptions = {}
 ): Promise<CallServerReturnValue> => {
-  // set the options defaults
-  if (typeof options.useTheSessionToken !== "boolean") {
-    options.useTheSessionToken = true;
-  }
-
   try {
+    // set the options defaults
+    if (typeof options.useTheSessionToken !== "boolean") {
+      options.useTheSessionToken = true;
+    }
+
     const headers = new Headers({
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -41,7 +41,6 @@ const callServer = async (
       if (!session) {
         return { error: "Session token not found: session is null." };
       }
-      console.log("session.token", session.token);
       headers.set("Authorization", `Bearer ${session.token}`);
     }
 
