@@ -1,7 +1,18 @@
 import { useState } from "react";
-import { View, TextInput, Pressable, StyleSheet, Text } from "react-native";
+import {
+  View,
+  TextInput,
+  Pressable,
+  StyleSheet,
+  NativeSyntheticEvent,
+  TextInputContentSizeChangeEventData,
+} from "react-native";
 import { mainDispatchers, useMainDispatch } from "@/lib/context/MainContext";
 import { useAuth } from "@/lib/context/AuthContext";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+const inputLineHeight = 24;
+const inputPadding = 12;
 
 const InputBar = () => {
   const dispatch = useMainDispatch();
@@ -10,23 +21,38 @@ const InputBar = () => {
     return null;
   }
 
-  const [inputMessageText, setInputMessageText] = useState("");
+  const [text, setText] = useState("");
+  const [lines, setLines] = useState(1);
 
   const send = () => {
-    mainDispatchers.sendMessage(dispatch, {
-      text: inputMessageText,
-    });
+    mainDispatchers.sendMessage(dispatch, { text });
+    setText("");
+    setLines(1);
+  };
+
+  const onChangeSize = (
+    event: NativeSyntheticEvent<TextInputContentSizeChangeEventData>
+  ) => {
+    const contentHeight = event.nativeEvent.contentSize.height;
+    console.log(contentHeight)
+    const contentLines = (contentHeight - 2*inputPadding) / inputLineHeight;
+    setLines(Math.min(contentLines, 12));
   };
 
   return (
     <View style={styles.inputBar}>
       <TextInput
+        multiline
+        // @ts-ignore
+        rows={lines}
+        autoCapitalize="none"
         style={styles.input}
-        value={inputMessageText}
-        onChangeText={setInputMessageText}
+        value={text}
+        onChangeText={setText}
+        onContentSizeChange={onChangeSize}
       />
       <Pressable onPress={send}>
-        <Text>Send</Text>
+        <MaterialCommunityIcons name="send" size={24} color="black" />
       </Pressable>
     </View>
   );
@@ -41,10 +67,11 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
+    lineHeight: inputLineHeight,
     marginRight: 10,
     borderWidth: 1,
     borderColor: "#ccc",
-    padding: 8,
+    padding: inputPadding,
     borderRadius: 5,
   },
 });

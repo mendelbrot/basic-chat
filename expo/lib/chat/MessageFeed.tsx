@@ -31,7 +31,8 @@ const MessageFeed = () => {
 };
 
 const styles = StyleSheet.create({
-  feed: { paddingHorizontal: 10 },
+  feed: { 
+  },
 });
 
 export default MessageFeed;
