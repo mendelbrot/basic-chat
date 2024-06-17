@@ -7,7 +7,7 @@ import {
 } from "@/lib/context/MainContext";
 import { useAuth } from "@/lib/context/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
-import ErrorDisplay from "@/lib/ErrorDisplay";
+import ErrorDisplay from "@/lib/ui/ErrorDisplay";
 
 const moreRows = 12;
 const lessRows = 3;

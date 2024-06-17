@@ -1,8 +1,9 @@
 import { useAuth } from "@/lib/context/AuthContext";
 import React, { useState } from "react";
-import { StyleSheet, View, TextInput, Pressable, Text } from "react-native";
-import ErrorDisplay from "@/lib/ErrorDisplay";
+import { StyleSheet, View, TextInput } from "react-native";
+import ErrorDisplay from "@/lib/ui/ErrorDisplay";
 import { Ionicons } from "@expo/vector-icons";
+import Button from "@/lib/ui/Button";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -29,9 +30,9 @@ const LoginForm = () => {
         value={password}
         secureTextEntry
       />
-      <Pressable onPress={handleLogin}>
-        <Ionicons name="log-in-outline" size={24} color="black" />
-      </Pressable>
+      <Button onPress={handleLogin} styles={{ marginBottom: 16 }}>
+        <Ionicons name="log-in-outline" size={36} color="black" />
+      </Button>
       {loginError && (
         <ErrorDisplay errorText={loginError} dismissError={dismissLoginError} />
       )}
@@ -41,22 +42,16 @@ const LoginForm = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 32,
   },
   input: {
-    height: 40,
-    borderColor: "gray",
+    height: 48,
+    borderColor: "slate",
     borderWidth: 1,
-    marginBottom: 10,
-    padding: 10,
-  },
-  errorContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  errorText: {
-    color: "red",
-    marginRight: 5,
+    marginBottom: 16,
+    padding: 16,
+    borderRadius: 8,
+    fontSize: 18,
   },
 });
 
