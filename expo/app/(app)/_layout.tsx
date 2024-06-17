@@ -1,34 +1,46 @@
+import { View, StyleSheet, Dimensions } from "react-native";
+import { useState, useEffect } from "react";
 import LoginForm from "@/lib/auth/LoginForm";
 import { useAuth } from "@/lib/context/AuthContext";
 import { Slot } from "expo-router";
-import { View, StyleSheet } from "react-native";
 
 export default function App() {
+  const [width, setWidth] = useState(Dimensions.get("window").width);
   const { session } = useAuth();
 
+  /*
+  the goal is for the content to fill the screen if the screen is narrower 
+  than the specified with, and to be centered with exactly the specified
+  width if the screen is wider.
+
+  doing this with css only required a hack: using maxWidth for the content
+  and a non-visible text element placed inside the content to prevent it 
+  from collapsing.
+
+  using the event listener instead does this better.
+  */
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener("change", ({ window }) => {
+      setWidth(window.width);
+    });
+    return () => subscription.remove();
+  }, []);
+
+  const contentWidth = Math.min(512, width);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.innerContainer}>
-        <View style={styles.content}>{session ? <Slot /> : <LoginForm />}</View>
+    <View style={styles.rootContainer}>
+      <View style={{ width: contentWidth }}>
+        {session ? <Slot /> : <LoginForm />}
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    // width: "100%",
-    // height: "100%",
-    // display: "flex",
-    // flexDirection: "column",
-    // alignItems: "center",
-  },
-  innerContainer: {
-    // display: "flex",
-    // justifyContent: "center",
-  },
-  content: {
+  rootContainer: {
     flex: 1,
-    maxWidth: 580,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
