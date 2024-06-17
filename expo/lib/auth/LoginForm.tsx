@@ -30,12 +30,14 @@ const LoginForm = () => {
         value={password}
         secureTextEntry
       />
-      <Button onPress={handleLogin} styles={{ marginBottom: 16 }}>
+      <Button onPress={handleLogin} type="success">
         <Ionicons name="log-in-outline" size={36} color="black" />
       </Button>
+      <View style={styles.error}>
       {loginError && (
         <ErrorDisplay errorText={loginError} dismissError={dismissLoginError} />
       )}
+      </View>
     </View>
   );
 };
@@ -53,6 +55,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     fontSize: 18,
   },
+  error: {
+    marginTop: 16,
+    height: 16,
+  }
 });
 
 export default LoginForm;

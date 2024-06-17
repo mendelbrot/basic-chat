@@ -1,43 +1,30 @@
-import { ReactNode } from "react";
-import { StyleSheet, View, Pressable } from "react-native";
+import { StyleSheet } from "react-native";
+import ButtonBase, { ButtonBaseProps } from "./ButtonBase";
 
-type Props = {
-  children: ReactNode;
-  onPress: () => void;
-  styles?: Object;
+type Props = ButtonBaseProps & { type?: "success" | "danger" };
+
+const Button = (props: Props) => {
+  const { buttonStyles, type, ...rest } = props;
+
+  const colorStyle =
+    (type === "success" && { backgroundColor: "lightgreen" }) ||
+    (type === "danger" && { backgroundColor: "coral" });
+
+  return (
+    <ButtonBase
+      buttonStyles={[styles.buttonStyles, colorStyle, buttonStyles]}
+      {...rest}
+    />
+  );
 };
 
-export default function Button(props: Props) {
-  return (
-    <Pressable
-      style={({ pressed }) => [
-        styles.button,
-        props.styles,
-        pressed && styles.pressed,
-      ]}
-      onPress={props.onPress}
-    >
-      <View style={styles.buttonContent}>{props.children}</View>
-    </Pressable>
-  );
-}
-
 const styles = StyleSheet.create({
-  button: {
+  buttonStyles: {
     borderWidth: 2,
     borderRadius: 8,
     borderColor: "slate",
     height: 48,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  buttonContent: {
-    width: "100%",
-    height: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  pressed: {
-    opacity: 0.5,
   },
 });
+
+export default Button;
