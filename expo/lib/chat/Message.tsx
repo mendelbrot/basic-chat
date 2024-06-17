@@ -16,10 +16,11 @@ const Message = ({ message }: Props) => {
 
 const styles = StyleSheet.create({
   message: {
-    backgroundColor: "#f0f0f0",
-    padding: 10,
-    margin: 5,
-    borderRadius: 10,
+    margin: 8,
+    padding: 8,
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: "slate",
     alignSelf: "flex-start",
   },
   text: {

@@ -5,6 +5,7 @@ export type ButtonBaseProps = {
   children: ReactNode;
   onPress: () => void;
   buttonStyles?: Object | Object[];
+  disabled?: boolean;
 };
 
 const ButtonBase = (props: ButtonBaseProps) => {
@@ -17,6 +18,8 @@ const ButtonBase = (props: ButtonBaseProps) => {
       )
     : props.buttonStyles;
 
+  const disabled = props.disabled === true ? true : false;
+
   return (
     <Pressable
       style={({ pressed }) => [
@@ -25,6 +28,7 @@ const ButtonBase = (props: ButtonBaseProps) => {
         isHovered && styles.hovered,
         pressed && styles.pressed,
       ]}
+      disabled={disabled}
       onPress={props.onPress}
       onHoverIn={() => setIsHovered(true)}
       onHoverOut={() => setIsHovered(false)}

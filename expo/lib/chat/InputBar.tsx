@@ -8,6 +8,7 @@ import {
 import { useAuth } from "@/lib/context/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
 import ErrorDisplay from "@/lib/ui/ErrorDisplay";
+import ButtonSmall from "@/lib/ui/ButtonSmall";
 
 const moreRows = 12;
 const lessRows = 3;
@@ -37,7 +38,7 @@ const InputBar = () => {
   };
 
   return (
-    <View style={styles.inputBar}>
+    <View style={styles.container}>
       {error && (
         <ErrorDisplay
           errorText={error}
@@ -54,28 +55,27 @@ const InputBar = () => {
         onChangeText={setText}
       />
       <View style={styles.sendButtonRow}>
-        <Pressable onPress={send}>
+        <ButtonSmall onPress={send} disabled={text.length === 0}>
           <Ionicons name="send" size={24} color="black" />
-        </Pressable>
-        <Pressable onPress={toggleRows}>
+        </ButtonSmall>
+        <ButtonSmall onPress={toggleRows}>
           {rows === lessRows ? (
             <Ionicons name="chevron-expand" size={24} color="black" />
           ) : (
             <Ionicons name="chevron-collapse" size={24} color="black" />
           )}
-        </Pressable>
-        <Pressable onPress={clear}>
+        </ButtonSmall>
+        <ButtonSmall onPress={clear}>
           <Ionicons name="close" size={24} color="black" />
-        </Pressable>
+        </ButtonSmall>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  inputBar: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+  container: {
+    margin: 16,
   },
   input: {
     borderWidth: 1,

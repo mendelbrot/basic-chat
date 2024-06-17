@@ -30,7 +30,7 @@ export default function App() {
 
   return (
     <View style={styles.rootContainer}>
-      <View style={{ width: contentWidth }}>
+      <View style={[styles.contentContainer, { width: contentWidth }]}>
         {session ? <Slot /> : <LoginForm />}
       </View>
     </View>
@@ -41,6 +41,8 @@ const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
   },
+  contentContainer: {
+    flex: 1
+  }
 });

@@ -16,27 +16,34 @@ const LoginForm = () => {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Username"
-        onChangeText={setUsername}
-        value={username}
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        onChangeText={setPassword}
-        value={password}
-        secureTextEntry
-      />
-      <Button onPress={handleLogin} type="success">
-        <Ionicons name="log-in-outline" size={36} color="black" />
-      </Button>
-      <View style={styles.error}>
-      {loginError && (
-        <ErrorDisplay errorText={loginError} dismissError={dismissLoginError} />
-      )}
+      <View style={styles.innerContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Username"
+          onChangeText={setUsername}
+          value={username}
+          autoCapitalize="none"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          onChangeText={setPassword}
+          value={password}
+          secureTextEntry
+        />
+
+        <Button onPress={handleLogin} type="secondary">
+          <Ionicons name="log-in-outline" size={36} color="black" />
+        </Button>
+
+        <View style={styles.error}>
+          {loginError && (
+            <ErrorDisplay
+              errorText={loginError}
+              dismissError={dismissLoginError}
+            />
+          )}
+        </View>
       </View>
     </View>
   );
@@ -44,6 +51,10 @@ const LoginForm = () => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  innerContainer: {
     padding: 32,
   },
   input: {
@@ -58,7 +69,7 @@ const styles = StyleSheet.create({
   error: {
     marginTop: 16,
     height: 16,
-  }
+  },
 });
 
 export default LoginForm;

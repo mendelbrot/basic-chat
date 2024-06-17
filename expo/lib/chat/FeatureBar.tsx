@@ -8,7 +8,7 @@ const FeatureBar = () => {
   const { logout } = useAuth();
 
   return (
-    <View style={styles.inputBar}>
+    <View style={styles.container}>
       <TextInput
         autoCapitalize="none"
         style={styles.input}
@@ -25,9 +25,8 @@ const FeatureBar = () => {
 };
 
 const styles = StyleSheet.create({
-  inputBar: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+  container: {
+    margin: 16,
   },
   input: {
     borderWidth: 1,

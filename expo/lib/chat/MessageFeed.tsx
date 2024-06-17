@@ -25,13 +25,17 @@ const MessageFeed = () => {
       data={state.messages}
       renderItem={({ item }) => <Message message={item} />}
       keyExtractor={(item, _index) => item.id.toString()}
-      style={styles.feed}
+      style={styles.container}
     />
   );
 };
 
 const styles = StyleSheet.create({
-  feed: { 
+  container: {
+    marginHorizontal: 16,
+    borderColor: "slate",
+    borderRadius: 8,
+    borderWidth: 1
   },
 });
 
