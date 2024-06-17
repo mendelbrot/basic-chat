@@ -1,7 +1,8 @@
 import { useAuth } from "@/lib/context/AuthContext";
 import React, { useState } from "react";
 import { StyleSheet, View, TextInput, Pressable, Text } from "react-native";
-import { Entypo } from "@expo/vector-icons";
+import ErrorDisplay from "@/lib/ErrorDisplay";
+import { Ionicons } from "@expo/vector-icons";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -29,15 +30,10 @@ const LoginForm = () => {
         secureTextEntry
       />
       <Pressable onPress={handleLogin}>
-        <Text>Login</Text>
+        <Ionicons name="log-in-outline" size={24} color="black" />
       </Pressable>
       {loginError && (
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>{loginError}</Text>
-          <Pressable onPress={dismissLoginError}>
-            <Entypo name="cross" size={16} color="red" />
-          </Pressable>
-        </View>
+        <ErrorDisplay errorText={loginError} dismissError={dismissLoginError} />
       )}
     </View>
   );
@@ -57,7 +53,6 @@ const styles = StyleSheet.create({
   errorContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 10,
   },
   errorText: {
     color: "red",

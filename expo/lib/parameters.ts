@@ -1,5 +1,5 @@
 const p = {
-  serverURL: process.env.EXPO_PUBLIC_API_URL || "http://localhost:8000"
+  serverURL: process.env.EXPO_PUBLIC_API_URL
 }
 
 export default p;

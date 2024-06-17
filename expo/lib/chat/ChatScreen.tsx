@@ -1,10 +1,12 @@
 import { StyleSheet, KeyboardAvoidingView } from "react-native";
 import MessageFeed from "./MessageFeed";
 import InputBar from "./InputBar";
+import FeatureBar from "./FeatureBar";
 
 const ChatScreen = () => {
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <FeatureBar />
       <MessageFeed />
       <InputBar />
     </KeyboardAvoidingView>
@@ -12,7 +14,9 @@ const ChatScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, maxWidth: 500, height: "100%" },
+  container: {
+    height: "100%",
+  },
 });
 
 export default ChatScreen;

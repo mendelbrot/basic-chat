@@ -1,78 +1,92 @@
 import { useState } from "react";
+import { View, TextInput, Pressable, StyleSheet } from "react-native";
 import {
-  View,
-  TextInput,
-  Pressable,
-  StyleSheet,
-  NativeSyntheticEvent,
-  TextInputContentSizeChangeEventData,
-} from "react-native";
-import { mainDispatchers, useMainDispatch } from "@/lib/context/MainContext";
+  mainDispatchers,
+  useMain,
+  useMainDispatch,
+} from "@/lib/context/MainContext";
 import { useAuth } from "@/lib/context/AuthContext";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import ErrorDisplay from "@/lib/ErrorDisplay";
 
-const inputLineHeight = 24;
-const inputPadding = 12;
+const moreRows = 12;
+const lessRows = 3;
 
 const InputBar = () => {
   const dispatch = useMainDispatch();
   const { session } = useAuth();
+  const { error } = useMain();
   if (!session) {
     return null;
   }
 
   const [text, setText] = useState("");
-  const [lines, setLines] = useState(1);
+  const [rows, setRows] = useState(lessRows);
 
   const send = () => {
     mainDispatchers.sendMessage(dispatch, { text });
     setText("");
-    setLines(1);
   };
 
-  const onChangeSize = (
-    event: NativeSyntheticEvent<TextInputContentSizeChangeEventData>
-  ) => {
-    const contentHeight = event.nativeEvent.contentSize.height;
-    console.log(contentHeight)
-    const contentLines = (contentHeight - 2*inputPadding) / inputLineHeight;
-    setLines(Math.min(contentLines, 12));
+  const clear = () => {
+    setText("");
+  };
+
+  const toggleRows = () => {
+    setRows(rows === lessRows ? moreRows : lessRows);
   };
 
   return (
     <View style={styles.inputBar}>
+      {error && (
+        <ErrorDisplay
+          errorText={error}
+          dismissError={() => mainDispatchers.dismissError(dispatch)}
+        />
+      )}
       <TextInput
         multiline
         // @ts-ignore
-        rows={lines}
+        rows={rows}
         autoCapitalize="none"
         style={styles.input}
         value={text}
         onChangeText={setText}
-        onContentSizeChange={onChangeSize}
       />
-      <Pressable onPress={send}>
-        <MaterialCommunityIcons name="send" size={24} color="black" />
-      </Pressable>
+      <View style={styles.sendButtonRow}>
+        <Pressable onPress={send}>
+          <Ionicons name="send" size={24} color="black" />
+        </Pressable>
+        <Pressable onPress={toggleRows}>
+          {rows === lessRows ? (
+            <Ionicons name="chevron-expand" size={24} color="black" />
+          ) : (
+            <Ionicons name="chevron-collapse" size={24} color="black" />
+          )}
+        </Pressable>
+        <Pressable onPress={clear}>
+          <Ionicons name="close" size={24} color="black" />
+        </Pressable>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   inputBar: {
-    flexDirection: "row",
-    alignItems: "center",
     paddingHorizontal: 10,
     paddingVertical: 5,
   },
   input: {
-    flex: 1,
-    lineHeight: inputLineHeight,
-    marginRight: 10,
     borderWidth: 1,
-    borderColor: "#ccc",
-    padding: inputPadding,
+    padding: 8,
     borderRadius: 5,
+  },
+  sendButtonRow: {
+    paddingTop: 5,
+    flex: 1,
+    flexDirection: "row-reverse",
+    justifyContent: "space-between",
   },
 });
 
