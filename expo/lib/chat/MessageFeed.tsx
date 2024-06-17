@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { useEffect, useRef } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
 import Message from "./Message";
 import {
   mainDispatchers,
@@ -15,27 +15,39 @@ const MessageFeed = () => {
   if (!session) {
     return null;
   }
+  const list = useRef<FlatList>(null);
 
   useEffect(() => {
     mainDispatchers.fetchEverything(dispatch);
   }, []);
 
+  // useEffect(() => {
+  //   state.messages.length > 0 &&
+  //     list.current &&
+  //     list.current.scrollToIndex({
+  //       index: 3,
+  //     });
+  // }, [state.messages]);
+
   return (
-    <FlatList
-      data={state.messages}
-      renderItem={({ item }) => <Message message={item} />}
-      keyExtractor={(item, _index) => item.id.toString()}
-      style={styles.container}
-    />
+    <View style={styles.container}>
+      <FlatList
+        ref={list}
+        data={state.messages}
+        renderItem={({ item }) => <Message message={item} />}
+        keyExtractor={(item, _index) => item.id.toString()}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     marginHorizontal: 16,
     borderColor: "slate",
     borderRadius: 8,
-    borderWidth: 1
+    borderWidth: 1,
   },
 });
 

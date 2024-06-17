@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 import { Message as MessageType } from "@/lib/context/MainContext";
+import theme from "@/lib/ui/theme";
 
 type Props = {
   message: MessageType;
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
   },
   text: {
-    fontSize: 16,
+    fontSize: theme.fontSize,
   },
 });
 

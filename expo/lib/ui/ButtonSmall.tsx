@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import ButtonBase, { ButtonBaseProps } from "./ButtonBase";
+import ButtonBase, { ButtonBaseProps } from "@/lib/ui/ButtonBase";
 
 const ButtonSmall = (props: ButtonBaseProps) => {
   const { buttonStyles, ...rest } = props;

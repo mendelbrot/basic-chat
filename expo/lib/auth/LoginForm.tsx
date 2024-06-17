@@ -4,6 +4,7 @@ import { StyleSheet, View, TextInput } from "react-native";
 import ErrorDisplay from "@/lib/ui/ErrorDisplay";
 import { Ionicons } from "@expo/vector-icons";
 import Button from "@/lib/ui/Button";
+import theme from "@/lib/ui/theme";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -32,7 +33,7 @@ const LoginForm = () => {
           secureTextEntry
         />
 
-        <Button onPress={handleLogin} type="secondary">
+        <Button onPress={handleLogin}>
           <Ionicons name="log-in-outline" size={36} color="black" />
         </Button>
 
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     padding: 16,
     borderRadius: 8,
-    fontSize: 18,
+    fontSize: theme.fontSize,
   },
   error: {
     marginTop: 16,

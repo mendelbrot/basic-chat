@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, TextInput, Pressable, StyleSheet } from "react-native";
+import { View, TextInput, StyleSheet } from "react-native";
 import {
   mainDispatchers,
   useMain,
@@ -9,6 +9,7 @@ import { useAuth } from "@/lib/context/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
 import ErrorDisplay from "@/lib/ui/ErrorDisplay";
 import ButtonSmall from "@/lib/ui/ButtonSmall";
+import theme from "@/lib/ui/theme";
 
 const moreRows = 12;
 const lessRows = 3;
@@ -40,10 +41,12 @@ const InputBar = () => {
   return (
     <View style={styles.container}>
       {error && (
-        <ErrorDisplay
-          errorText={error}
-          dismissError={() => mainDispatchers.dismissError(dispatch)}
-        />
+        <View style={styles.error}>
+          <ErrorDisplay
+            errorText={error}
+            dismissError={() => mainDispatchers.dismissError(dispatch)}
+          />
+        </View>
       )}
       <TextInput
         multiline
@@ -65,7 +68,7 @@ const InputBar = () => {
             <Ionicons name="chevron-collapse" size={24} color="black" />
           )}
         </ButtonSmall>
-        <ButtonSmall onPress={clear}>
+        <ButtonSmall onPress={clear} disabled={text.length === 0}>
           <Ionicons name="close" size={24} color="black" />
         </ButtonSmall>
       </View>
@@ -81,6 +84,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 8,
     borderRadius: 5,
+    fontSize: theme.fontSize,
   },
   sendButtonRow: {
     paddingTop: 5,
@@ -88,6 +92,9 @@ const styles = StyleSheet.create({
     flexDirection: "row-reverse",
     justifyContent: "space-between",
   },
+  error: {
+    marginBottom: 4,
+  }
 });
 
 export default InputBar;

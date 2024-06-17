@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import ButtonBase, { ButtonBaseProps } from "./ButtonBase";
+import ButtonBase, { ButtonBaseProps } from "@/lib/ui/ButtonBase";
 
 type Props = ButtonBaseProps & { type?: "success" | "secondary" | "danger" };
 
@@ -21,7 +21,7 @@ const Button = (props: Props) => {
 
 const styles = StyleSheet.create({
   buttonStyles: {
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 8,
     borderColor: "slate",
     height: 48,
