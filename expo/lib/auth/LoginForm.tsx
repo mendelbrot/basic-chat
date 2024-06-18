@@ -1,7 +1,10 @@
 import { useAuth } from "@/lib/context/AuthContext";
 import React, { useState } from "react";
-import { StyleSheet, View, TextInput, Pressable, Text } from "react-native";
-import { Entypo } from "@expo/vector-icons";
+import { StyleSheet, View, TextInput } from "react-native";
+import ErrorDisplay from "@/lib/ui/ErrorDisplay";
+import { Ionicons } from "@expo/vector-icons";
+import Button from "@/lib/ui/Button";
+import theme from "@/lib/ui/theme";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -14,54 +17,59 @@ const LoginForm = () => {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Username"
-        onChangeText={setUsername}
-        value={username}
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        onChangeText={setPassword}
-        value={password}
-        secureTextEntry
-      />
-      <Pressable onPress={handleLogin}>
-        <Text>Login</Text>
-      </Pressable>
-      {loginError && (
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>{loginError}</Text>
-          <Pressable onPress={dismissLoginError}>
-            <Entypo name="cross" size={16} color="red" />
-          </Pressable>
+      <View style={styles.innerContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Username"
+          onChangeText={setUsername}
+          value={username}
+          autoCapitalize="none"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          onChangeText={setPassword}
+          value={password}
+          secureTextEntry
+        />
+
+        <Button onPress={handleLogin}>
+          <Ionicons name="log-in-outline" size={36} color="black" />
+        </Button>
+
+        <View style={styles.error}>
+          {loginError && (
+            <ErrorDisplay
+              errorText={loginError}
+              dismissError={dismissLoginError}
+            />
+          )}
         </View>
-      )}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    flex: 1,
+    justifyContent: "center",
+  },
+  innerContainer: {
+    padding: 32,
   },
   input: {
-    height: 40,
-    borderColor: "gray",
+    height: 48,
+    borderColor: "slate",
     borderWidth: 1,
-    marginBottom: 10,
-    padding: 10,
+    marginBottom: 16,
+    padding: 16,
+    borderRadius: 8,
+    fontSize: theme.fontSize,
   },
-  errorContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  errorText: {
-    color: "red",
-    marginRight: 5,
+  error: {
+    marginTop: 16,
+    height: 16,
   },
 });
 

@@ -119,6 +119,10 @@ type Action9 = {
   };
 };
 
+type Action10 = {
+  type: "error:dismiss";
+};
+
 export type MainAction =
   | Action1
   | Action2
@@ -128,7 +132,8 @@ export type MainAction =
   | Action6
   | Action7
   | Action8
-  | Action9;
+  | Action9
+  | Action10;
 
 const mainReducer = (state: MainState, action: MainAction): MainState => {
   switch (action.type) {
@@ -210,6 +215,12 @@ const mainReducer = (state: MainState, action: MainAction): MainState => {
         failedMessages: [...state.messages, action.payload.failedMessage],
         error: action.payload.error,
         workingState: null,
+      };
+    }
+    case "error:dismiss": {
+      return {
+        ...state,
+        error: null,
       };
     }
     default: {
@@ -344,6 +355,10 @@ const resendFailedMessage = async (
   });
 };
 
+const dismissError = (dispatch: Dispatch<MainAction>) => {
+  dispatch({ type: "error:dismiss" });
+};
+
 export const mainDispatchers = {
   fetchMessages,
   fetchUsers,
@@ -351,6 +366,7 @@ export const mainDispatchers = {
   sendMessage,
   deleteFailedMessage,
   resendFailedMessage,
+  dismissError,
 };
 
 export const MainContext = createContext<MainState>(initialMainState);

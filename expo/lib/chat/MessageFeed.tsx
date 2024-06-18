@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { useEffect, useRef } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
 import Message from "./Message";
 import {
   mainDispatchers,
@@ -15,23 +15,39 @@ const MessageFeed = () => {
   if (!session) {
     return null;
   }
+  const list = useRef<ScrollView>(null);
 
   useEffect(() => {
     mainDispatchers.fetchEverything(dispatch);
   }, []);
 
+  useEffect(() => {
+    list.current && list.current.scrollToEnd({ animated: false });
+  }, [state.messages]);
+
   return (
-    <FlatList
-      data={state.messages}
-      renderItem={({ item }) => <Message message={item} />}
-      keyExtractor={(item, _index) => item.id.toString()}
-      style={styles.feed}
-    />
+    <View style={styles.container}>
+      <ScrollView ref={list}>
+        {state.messages.map((item, _index) => (
+          <Message key={item.id} message={item} />
+        ))}
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  feed: { paddingHorizontal: 10 },
+  container: {
+    flex: 1,
+    marginHorizontal: 16,
+    borderColor: "slate",
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderRightWidth: 0,
+    borderLeftWidth: 0,
+    // borderRadius: 8,
+    borderWidth: 1,
+  },
 });
 
 export default MessageFeed;
