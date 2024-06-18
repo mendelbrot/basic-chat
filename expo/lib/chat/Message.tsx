@@ -9,21 +9,27 @@ type Props = {
 const Message = ({ message }: Props) => {
 
   return (
-    <View style={styles.message}>
+    <View style={styles.outer}>
+      <View style={styles.inner}>
       <Text style={styles.text}>{message.text}</Text>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  message: {
-    // margin: 8,
+  outer: {
+    alignSelf: "center",
+    width: "95%",
+  },
+  inner: {
+    marginVertical: 8,
     padding: 8,
     borderWidth: 1,
     borderRadius: 8,
     borderColor: "slate",
     alignSelf: "flex-start",
-    height:100,
+    maxWidth: "100%"
   },
   text: {
     fontSize: theme.fontSize,

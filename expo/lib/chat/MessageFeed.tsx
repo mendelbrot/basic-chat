@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import Message from "./Message";
 import {
   mainDispatchers,
@@ -15,32 +15,23 @@ const MessageFeed = () => {
   if (!session) {
     return null;
   }
-  const list = useRef<FlatList>(null);
+  const list = useRef<ScrollView>(null);
 
   useEffect(() => {
     mainDispatchers.fetchEverything(dispatch);
   }, []);
 
   useEffect(() => {
-    list.current?.scrollToEnd({animated: false})
-    // state.messages.length > 0 &&
-    //   list.current &&
-    //   list.current.scrollToIndex({
-    //     index: 3,
-    //   });
+    list.current && list.current.scrollToEnd({ animated: false });
   }, [state.messages]);
 
   return (
     <View style={styles.container}>
-      <FlatList
-        ref={list}
-        data={state.messages}
-        renderItem={({ item }) => <Message message={item} />}
-        keyExtractor={(item, _index) => item.id.toString()}
-        getItemLayout={(data, index) => (
-          {length: 100, offset: 100 * index, index}
-        )}
-      />
+      <ScrollView ref={list}>
+        {state.messages.map((item, _index) => (
+          <Message key={item.id} message={item} />
+        ))}
+      </ScrollView>
     </View>
   );
 };
@@ -50,7 +41,11 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 16,
     borderColor: "slate",
-    borderRadius: 8,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderRightWidth: 0,
+    borderLeftWidth: 0,
+    // borderRadius: 8,
     borderWidth: 1,
   },
 });
