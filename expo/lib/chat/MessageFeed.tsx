@@ -21,13 +21,14 @@ const MessageFeed = () => {
     mainDispatchers.fetchEverything(dispatch);
   }, []);
 
-  // useEffect(() => {
-  //   state.messages.length > 0 &&
-  //     list.current &&
-  //     list.current.scrollToIndex({
-  //       index: 3,
-  //     });
-  // }, [state.messages]);
+  useEffect(() => {
+    list.current?.scrollToEnd({animated: false})
+    // state.messages.length > 0 &&
+    //   list.current &&
+    //   list.current.scrollToIndex({
+    //     index: 3,
+    //   });
+  }, [state.messages]);
 
   return (
     <View style={styles.container}>
@@ -36,6 +37,9 @@ const MessageFeed = () => {
         data={state.messages}
         renderItem={({ item }) => <Message message={item} />}
         keyExtractor={(item, _index) => item.id.toString()}
+        getItemLayout={(data, index) => (
+          {length: 100, offset: 100 * index, index}
+        )}
       />
     </View>
   );

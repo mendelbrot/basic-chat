@@ -17,12 +17,13 @@ const Message = ({ message }: Props) => {
 
 const styles = StyleSheet.create({
   message: {
-    margin: 8,
+    // margin: 8,
     padding: 8,
     borderWidth: 1,
     borderRadius: 8,
     borderColor: "slate",
     alignSelf: "flex-start",
+    height:100,
   },
   text: {
     fontSize: theme.fontSize,
