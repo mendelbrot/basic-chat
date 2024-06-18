@@ -1,34 +1,15 @@
-name: deploy
+name: deploy expo
 on:
   pull_request:
     types: [closed]
     branches:
       - main
+    paths: 
+      - expo/**
 
 jobs:
-  deploy-node-server:
-    name: deploy node server
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
-
-    defaults:
-      run:
-        working-directory: ./node
-
-    steps:
-      - name: checkout code
-        uses: actions/checkout@v4
-
-      - name: set up fly
-        uses: superfly/flyctl-actions/setup-flyctl@master
-
-      - name: deploy fly from Dockerfile fly.toml
-        run: flyctl deploy --remote-only
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-
   deploy-expo-web:
-    name: deploy frontend web
+    name: deploy expo web
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
 
@@ -61,6 +42,3 @@ jobs:
             --auth ${{ secrets.NETLIFY_API_TOKEN }} \
             --prod
 
-# https://www.raulmelo.me/en/blog/deploying-netlify-github-actions-guide
-# https://docs.netlify.com/cli/get-started/
-# https://docs.expo.dev/eas-update/github-actions/

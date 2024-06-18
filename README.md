@@ -29,3 +29,8 @@ https://docs.expo.dev/router/reference/authentication/
 websockets
 https://blog.logrocket.com/Socketentication-react-router-v6/
 https://socket.io/how-to/use-with-react
+
+github actions
+https://www.raulmelo.me/en/blog/deploying-netlify-github-actions-guide
+https://docs.netlify.com/cli/get-started/
+https://docs.expo.dev/eas-update/github-actions/

@@ -1,8 +1,10 @@
-name: test
+name: test node
 on:
   push:
     branches:
       - dev
+    paths: 
+      - node/**
 
 jobs:
   test-node:
