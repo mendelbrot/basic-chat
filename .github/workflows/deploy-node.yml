@@ -15,7 +15,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./node
+        working-directory: node
 
     steps:
       - name: checkout code

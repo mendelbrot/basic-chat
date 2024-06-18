@@ -15,7 +15,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./expo
+        working-directory: expo
 
     steps:
       - name: checkout code
