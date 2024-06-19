@@ -179,7 +179,7 @@ const mainReducer = (state: MainState, action: MainAction): MainState => {
     case "message:send": {
       return {
         ...state,
-        messages: [...state.messages, action.payload.message],
+        // messages: [...state.messages, action.payload.message],
         workingState: null,
       };
     }
@@ -195,7 +195,7 @@ const mainReducer = (state: MainState, action: MainAction): MainState => {
     case "failed-message:resend": {
       return {
         ...state,
-        messages: [...state.messages, action.payload.message],
+        // messages: [...state.messages, action.payload.message],
         failedMessages: state.failedMessages.filter(
           (_: any, index: number) => index !== action.payload.index
         ),
@@ -212,7 +212,7 @@ const mainReducer = (state: MainState, action: MainAction): MainState => {
     case "message-send-error:handle": {
       return {
         ...state,
-        failedMessages: [...state.messages, action.payload.failedMessage],
+        failedMessages: [...state.failedMessages, action.payload.failedMessage],
         error: action.payload.error,
         workingState: null,
       };
@@ -324,21 +324,23 @@ const sendMessage = async (
 };
 
 const deleteFailedMessage = (dispatch: Dispatch<MainAction>, index: number) => {
+  console.log("deleteFailedMessage")
   dispatch({ type: "failed-message:delete", payload: { index } });
 };
 
 const resendFailedMessage = async (
   dispatch: Dispatch<MainAction>,
-  state: MainState,
+  draft: DraftMessage,
   index: number
 ) => {
+  console.log("resendFailedMessage")
   dispatch({
     type: "working:start",
     payload: { workingState: "message:send" },
   });
 
   const { error, data: message } = await api.callServer("POST", "messages", {
-    body: state.failedMessages[index],
+    body: draft,
   });
 
   if (error) {

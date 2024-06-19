@@ -14,6 +14,7 @@ export type CallServerOptions = {
 export type CallServerReturnValue = {
   error?: string | null;
   data?: JSONValue | null;
+  status?: number;
 };
 
 const callServer = async (
@@ -61,16 +62,18 @@ const callServer = async (
 
     if (!data && !error) {
       return {
-        error: `${response.status}: Server response was not in expected format.`,
+        error: "Server response was not in expected format.",
+        status: response.status
       };
     }
 
     return {
       data,
       error,
+      status: response.status
     };
   } catch (error) {
-    return { error: "Client or network error: server was not reachable." };
+    return { error: "Network error: server was not reachable." };
   }
 };
 
