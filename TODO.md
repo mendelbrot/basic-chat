@@ -1,13 +1,13 @@
-- [ ] **expo: logout button**
+- [x] **expo: logout button**
 
-- [ ] **expo: the input bar will be cleared when a message is sent**
+- [x] **expo: the input bar will be cleared when a message is sent**
 
-- [ ] **expo: the messages feed will scroll to the bottom when a message is sent or received**
+- [x] **expo: the messages feed will scroll to the bottom when a message is sent or received**
 
-- [ ] **expo: the css weirdness of the screens will be cleaned up**
+- [x] **expo: the css weirdness of the screens will be cleaned up**
 there will be a consistent background, margin and padding, and a max width.
 
-- [ ] **expo: messages will be displayed in boxes with the sender and date at the bottom**
+- [x] **expo: messages will be displayed in boxes with the sender and date at the bottom**
 
 - [ ] **expo: typing enter will send a message and shift + enter will be a new line**
 
@@ -27,3 +27,5 @@ the messages feed will have a search bar at the top. typing three or more charac
 the android app will send push notifications when new messages are received.
 
 - [ ] **expo: android app build automation**
+
+- [x] **set focus back on the text input if it is expanded**

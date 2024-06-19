@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
 import {
   mainDispatchers,
@@ -25,6 +25,8 @@ const InputBar = () => {
   const [text, setText] = useState("");
   const [rows, setRows] = useState(lessRows);
 
+  const textInput = useRef<TextInput>(null);
+
   const send = () => {
     mainDispatchers.sendMessage(dispatch, { text });
     setText("");
@@ -32,11 +34,19 @@ const InputBar = () => {
 
   const clear = () => {
     setText("");
+    setRows(lessRows);
   };
 
   const toggleRows = () => {
     setRows(rows === lessRows ? moreRows : lessRows);
   };
+
+  // set focus back on the text input if it is expanded
+  useEffect(() => {
+    if (rows === moreRows) {
+      textInput.current && textInput.current.focus();
+    }
+  }, [rows]);
 
   return (
     <View style={styles.container}>
@@ -50,6 +60,7 @@ const InputBar = () => {
       )}
       <TextInput
         multiline
+        ref={textInput}
         // @ts-ignore
         rows={rows}
         autoCapitalize="none"
@@ -68,7 +79,7 @@ const InputBar = () => {
             <Ionicons name="chevron-collapse" size={24} color="black" />
           )}
         </ButtonSmall>
-        <ButtonSmall onPress={clear} disabled={text.length === 0}>
+        <ButtonSmall onPress={clear} disabled={text.length === 0 && rows === lessRows}>
           <Ionicons name="close" size={24} color="black" />
         </ButtonSmall>
       </View>
@@ -94,7 +105,7 @@ const styles = StyleSheet.create({
   },
   error: {
     marginBottom: 4,
-  }
+  },
 });
 
 export default InputBar;
