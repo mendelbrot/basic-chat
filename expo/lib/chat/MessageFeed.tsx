@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import Message from "./Message";
+import FailedMessage from "./FailedMessage";
 import {
   mainDispatchers,
   useMain,
@@ -23,13 +24,16 @@ const MessageFeed = () => {
 
   useEffect(() => {
     list.current && list.current.scrollToEnd({ animated: false });
-  }, [state.messages]);
+  }, [state.messages, state.failedMessages]);
 
   return (
     <View style={styles.container}>
       <ScrollView ref={list}>
         {state.messages.map((item, _index) => (
           <Message key={item.id} message={item} />
+        ))}
+        {state.failedMessages.map((item, index) => (
+          <FailedMessage key={index} draft={item} index={index} />
         ))}
       </ScrollView>
     </View>

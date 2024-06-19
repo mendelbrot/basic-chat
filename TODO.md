@@ -28,4 +28,8 @@ the android app will send push notifications when new messages are received.
 
 - [ ] **expo: android app build automation**
 
-- [x] **set focus back on the text input if it is expanded**
+- [x] **expo: chat screen set focus back on the text input if it is expanded.**
+
+- [ ] **expo: display failed messages with buttons to resend or delete.**
+
+- [x] **expo: put a hamburger dropdown menu at top of window.**
