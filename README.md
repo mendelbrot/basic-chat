@@ -34,3 +34,6 @@ github actions
 https://www.raulmelo.me/en/blog/deploying-netlify-github-actions-guide
 https://docs.netlify.com/cli/get-started/
 https://docs.expo.dev/eas-update/github-actions/
+
+javascript date
+https://www.freecodecamp.org/news/how-to-format-dates-in-javascript/
