@@ -14,7 +14,7 @@ export default function App() {
   width if the screen is wider.
 
   doing this with css only required a hack: using maxWidth for the content
-  and a non-visible text element placed inside the content to prevent it 
+  and a visibility hidden text element placed inside the content to prevent it 
   from collapsing.
 
   using the event listener instead does this better.

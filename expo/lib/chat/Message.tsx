@@ -9,32 +9,48 @@ type Props = {
 };
 
 const formatTime = (timestamp: string, nowDateString: string): string => {
-  const dateString = new Date(timestamp).toLocaleDateString("en-US", { timeZone });
+  const dateString = new Date(timestamp).toLocaleDateString("en-US", {
+    timeZone,
+  });
 
   // same day
   if (dateString === nowDateString) {
-    return new Date(timestamp).toLocaleTimeString("en-US", { timeZone, hour: "numeric", minute: "numeric" });
+    return new Date(timestamp).toLocaleTimeString("en-US", {
+      timeZone,
+      hour: "numeric",
+      minute: "numeric",
+    });
   }
 
   // same year
   if (dateString.slice(-4) === nowDateString.slice(-4)) {
-    return new Date(timestamp).toLocaleDateString("en-US", { timeZone, month: 'short', day: 'numeric'});
+    return new Date(timestamp).toLocaleDateString("en-US", {
+      timeZone,
+      month: "short",
+      day: "numeric",
+    });
   }
 
   // different year
-  return new Date(timestamp).toLocaleDateString("en-US", { timeZone, year:"numeric", month: 'short'});
+  return new Date(timestamp).toLocaleDateString("en-US", {
+    timeZone,
+    year: "numeric",
+    month: "short",
+  });
 };
 
 const Message = ({ message }: Props) => {
   const state = useMain();
-  const nowDateString = new Date().toLocaleDateString("en-US", { timeZone })
+  const nowDateString = new Date().toLocaleDateString("en-US", { timeZone });
 
   return (
     <View style={styles.outer}>
       <View style={styles.inner}>
         <Text style={styles.text}>{message.text}</Text>
         <View style={styles.messageInfo}>
-          <Text style={{ marginRight: 32 }}>{state.usernameLookup[message.senderId]}</Text>
+          <Text style={{ marginRight: 32 }}>
+            {state.usernameLookup[message.senderId]}
+          </Text>
           <Text>{formatTime(message.createdAt, nowDateString)}</Text>
         </View>
       </View>

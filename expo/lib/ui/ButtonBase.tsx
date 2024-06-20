@@ -5,6 +5,7 @@ export type ButtonBaseProps = {
   children: ReactNode;
   onPress: () => void;
   buttonStyles?: Object | Object[];
+  buttonContentStyles?: Object;
   disabled?: boolean;
 };
 
@@ -33,7 +34,9 @@ const ButtonBase = (props: ButtonBaseProps) => {
       onHoverIn={() => setIsHovered(true)}
       onHoverOut={() => setIsHovered(false)}
     >
-      <View style={styles.buttonContent}>{props.children}</View>
+      <View style={[styles.buttonContent, props.buttonContentStyles]}>
+        {props.children}
+      </View>
     </Pressable>
   );
 };
@@ -41,7 +44,6 @@ const ButtonBase = (props: ButtonBaseProps) => {
 const styles = StyleSheet.create({
   button: {},
   buttonContent: {
-    width: "100%",
     height: "100%",
     alignItems: "center",
     justifyContent: "center",

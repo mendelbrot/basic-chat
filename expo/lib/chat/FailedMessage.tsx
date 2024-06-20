@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 import {
   DraftMessage as DraftMessageType,
-  Message as MessageType,
   useMainDispatch,
   mainDispatchers,
 } from "@/lib/context/MainContext";
