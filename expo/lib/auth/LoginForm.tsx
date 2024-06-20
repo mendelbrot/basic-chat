@@ -34,7 +34,7 @@ const LoginForm = () => {
         />
 
         <Button onPress={handleLogin}>
-          <Ionicons name="log-in-outline" size={36} color="black" />
+          <Ionicons name="log-in-outline" size={36} color={theme.iconColor} />
         </Button>
 
         <View style={styles.error}>
@@ -54,13 +54,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    
   },
   innerContainer: {
     padding: 32,
   },
   input: {
     height: 48,
-    borderColor: "slate",
+    borderColor: theme.borderColor,
     borderWidth: 1,
     marginBottom: 16,
     padding: 16,

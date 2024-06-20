@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 5,
     fontSize: theme.fontSize,
+    backgroundColor: theme.inputBackgroundColor,
   },
   sendButtonRow: {
     paddingTop: 5,

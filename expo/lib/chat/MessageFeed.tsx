@@ -8,6 +8,7 @@ import {
   useMainDispatch,
 } from "@/lib/context/MainContext";
 import { useAuth } from "@/lib/context/AuthContext";
+import theme from "@/lib/ui/theme";
 
 const MessageFeed = () => {
   const state = useMain();
@@ -43,12 +44,7 @@ const MessageFeed = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 16,
-    borderColor: "slate",
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderRightWidth: 0,
-    borderLeftWidth: 0,
+    marginHorizontal: 8,
   },
 });
 

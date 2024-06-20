@@ -3,6 +3,7 @@ import { View, StyleSheet, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import ButtonSmall from "@/lib/ui/ButtonSmall";
 import AppMenu from "@/lib/ui/AppMenu";
+import theme from "@/lib/ui/theme";
 
 type Props = {
   children: ReactNode;
@@ -28,7 +29,7 @@ const FeatureBar = ({
     <View style={styles.container}>
       <View style={styles.topBar}>
         <ButtonSmall onPress={toggleIsOpen}>
-          <Ionicons name="menu-outline" size={24} color="black" />
+          <Ionicons name="menu-outline" size={24} color={theme.menuIconColor} />
         </ButtonSmall>
         {extraMenu}
       </View>
@@ -53,10 +54,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   topBar: {
-    margin: 16,
+    padding: 16,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    backgroundColor: theme.menuBackgroundColor
   },
   wrapper: {
     flex: 1,
@@ -69,7 +71,6 @@ const styles = StyleSheet.create({
     left: 0,
     zIndex: 1,
     elevation: 1,
-    backgroundColor: "white",
   },
   contentWrapper: {
     flex: 1,
