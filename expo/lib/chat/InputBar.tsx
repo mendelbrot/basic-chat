@@ -92,13 +92,6 @@ const styles = StyleSheet.create({
   container: {
     margin: 16,
   },
-  input: {
-    borderWidth: 1,
-    padding: 8,
-    borderRadius: 8,
-    fontSize: theme.fontSize,
-    backgroundColor: theme.inputBackgroundColor,
-  },
   sendButtonRow: {
     paddingTop: 4,
     flex: 1,
