@@ -8,7 +8,6 @@ import {
   useMainDispatch,
 } from "@/lib/context/MainContext";
 import { useAuth } from "@/lib/context/AuthContext";
-import theme from "@/lib/ui/theme";
 
 const MessageFeed = () => {
   const state = useMain();
@@ -29,7 +28,7 @@ const MessageFeed = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView ref={list}>
+      <ScrollView ref={list} style={styles.scrollView}>
         {state.messages.map((item, _index) => (
           <Message key={item.id} message={item} />
         ))}
@@ -44,8 +43,11 @@ const MessageFeed = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 8,
   },
+  scrollView: {
+    // @ts-ignore
+    scrollbarWidth: "thin"
+  }
 });
 
 export default MessageFeed;

@@ -1,5 +1,6 @@
 import { ReactNode, useState } from "react";
 import { StyleSheet, View, Pressable } from "react-native";
+import theme from "@/lib/ui/theme";
 
 export type ButtonBaseProps = {
   children: ReactNode;

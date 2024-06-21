@@ -94,12 +94,12 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     padding: 8,
-    borderRadius: 5,
+    borderRadius: 8,
     fontSize: theme.fontSize,
     backgroundColor: theme.inputBackgroundColor,
   },
   sendButtonRow: {
-    paddingTop: 5,
+    paddingTop: 4,
     flex: 1,
     flexDirection: "row-reverse",
     justifyContent: "space-between",

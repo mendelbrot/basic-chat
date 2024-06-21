@@ -1,14 +1,12 @@
-import Message from "../chat/Message";
-
 const theme = {
   fontSize: 18,
   menuBackgroundColor: "slategrey",
   menuBorderColor: "white",
-  messageBackgroundColor: "lightgreen",
+  secondaryBackgroundColor: "lightcyan",
   backgroundColor: "lightyellow",
   borderColor: "slategrey",
   lightBorderColor: "lightgrey",
-  failedMessageBackgroundColor: "lavenderblush",
+  errorBackgroundColor: "mistyrose",
   errorColor: "red",
   iconColor: "black",
   menuIconColor: "white",
