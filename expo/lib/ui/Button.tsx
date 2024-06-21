@@ -8,9 +8,9 @@ const Button = (props: Props) => {
   const { buttonStyles, type, ...rest } = props;
 
   const colorStyle =
-    (type === "success" && { backgroundColor: "lightgreen" }) ||
-    (type === "secondary" && { backgroundColor: "lightskyblue" }) ||
-    (type === "danger" && { backgroundColor: "lightpink" });
+    (type === "success" && { backgroundColor: theme.successButton }) ||
+    (type === "secondary" && { backgroundColor: theme.secondaryButton }) ||
+    (type === "danger" && { backgroundColor: theme.dangerButton });
 
   return (
     <ButtonBase

@@ -13,6 +13,7 @@ import { useMain } from "@/lib/context/MainContext";
 import Message from "./Message";
 import { useState } from "react";
 import RootView from "@/lib/ui/RootView";
+import Input from "@/lib/ui/Input";
 
 type Props = {
   visible: boolean;
@@ -40,7 +41,7 @@ const MessageSearchModal = (props: Props) => {
             <ButtonSmall onPress={clearAndClose}>
               <Ionicons name="close" size={24} color={theme.menuIconColor} />
             </ButtonSmall>
-            <TextInput
+            <Input
               autoCapitalize="none"
               style={styles.input}
               value={searchText}
@@ -85,11 +86,6 @@ const styles = StyleSheet.create({
   input: {
     marginLeft: 16,
     flex: 1,
-    borderWidth: 1,
-    padding: 8,
-    borderRadius: 8,
-    fontSize: theme.fontSize,
-    backgroundColor: theme.inputBackgroundColor,
   },
   infoText: {
     fontSize: theme.fontSize,

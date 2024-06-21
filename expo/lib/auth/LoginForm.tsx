@@ -1,10 +1,11 @@
 import { useAuth } from "@/lib/context/AuthContext";
-import React, { useState } from "react";
+import { useState } from "react";
 import { StyleSheet, View, TextInput } from "react-native";
 import ErrorDisplay from "@/lib/ui/ErrorDisplay";
 import { Ionicons } from "@expo/vector-icons";
 import Button from "@/lib/ui/Button";
 import theme from "@/lib/ui/theme";
+import Input from "@/lib/ui/Input";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -18,14 +19,14 @@ const LoginForm = () => {
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
-        <TextInput
+        <Input
           style={styles.input}
           placeholder="Username"
           onChangeText={setUsername}
           value={username}
           autoCapitalize="none"
         />
-        <TextInput
+        <Input
           style={styles.input}
           placeholder="Password"
           onChangeText={setPassword}
@@ -33,7 +34,7 @@ const LoginForm = () => {
           secureTextEntry
         />
 
-        <Button onPress={handleLogin} buttonStyles={styles.button}>
+        <Button onPress={handleLogin} type={"success"}>
           <Ionicons name="log-in-outline" size={36} color={theme.iconColor} />
         </Button>
 
@@ -54,24 +55,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: theme.backgroundColor
-    
+    backgroundColor: theme.backgroundColor,
   },
   innerContainer: {
     padding: 32,
   },
   input: {
     height: 48,
-    borderColor: theme.borderColor,
-    borderWidth: 1,
-    marginBottom: 16,
     padding: 16,
-    borderRadius: 8,
-    fontSize: theme.fontSize,
-    backgroundColor: theme.inputBackgroundColor
-  },
-  button: {
-    backgroundColor: theme.secondaryBackgroundColor,
+    marginBottom: 16,
   },
   error: {
     marginTop: 16,
