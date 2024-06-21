@@ -10,15 +10,12 @@ import { useState } from "react";
 
 const ChatScreen = () => {
   const [searchModalVisible, setSearchModalVisible] = useState(false);
-  const toggleSearchModalVisible = () => {
-    setSearchModalVisible(!searchModalVisible);
-  };
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <FeatureBar
         extraMenu={
-          <ButtonSmall onPress={toggleSearchModalVisible}>
+          <ButtonSmall onPress={() => setSearchModalVisible(true)}>
             <Ionicons
               name="search-outline"
               size={24}
@@ -27,7 +24,10 @@ const ChatScreen = () => {
           </ButtonSmall>
         }
       >
-        <MessageSearchModal visible={searchModalVisible} setVisible={setSearchModalVisible} />
+        <MessageSearchModal
+          visible={searchModalVisible}
+          setVisible={setSearchModalVisible}
+        />
         <MessageFeed />
         <InputBar />
       </FeatureBar>
