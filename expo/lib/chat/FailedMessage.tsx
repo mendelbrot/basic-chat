@@ -1,13 +1,12 @@
 import { View, Text, StyleSheet } from "react-native";
 import {
   DraftMessage as DraftMessageType,
-  Message as MessageType,
   useMainDispatch,
   mainDispatchers,
 } from "@/lib/context/MainContext";
-import theme from "@/lib/ui/theme";
 import ButtonSmall from "../ui/ButtonSmall";
 import { Ionicons } from "@expo/vector-icons";
+import theme from "@/lib/ui/theme";
 
 type Props = {
   draft: DraftMessageType;
@@ -25,46 +24,45 @@ const FailedMessage = ({ draft, index }: Props) => {
   };
 
   return (
-    <View style={styles.outer}>
-      <View style={styles.inner}>
-        <Text style={styles.text}>{draft.text}</Text>
-        <View style={styles.options}>
-          <ButtonSmall onPress={deleteDraft}>
-            <Ionicons name="close" size={24} color="red" />
-          </ButtonSmall>
-          <ButtonSmall onPress={resendMessage}>
-            <Ionicons name="arrow-redo-outline" size={24} color="red" />
-          </ButtonSmall>
-        </View>
+    <View style={styles.inner}>
+      <Text style={styles.text}>{draft.text}</Text>
+      <View style={styles.options}>
+        <ButtonSmall onPress={deleteDraft}>
+          <Ionicons name="close" size={24} color="red" />
+        </ButtonSmall>
+        <ButtonSmall onPress={resendMessage}>
+          <Ionicons name="arrow-redo-outline" size={24} color="red" />
+        </ButtonSmall>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  outer: {
-    alignSelf: "center",
-    width: "95%",
-  },
   inner: {
+    display: "flex",
     marginVertical: 8,
+    marginHorizontal: 16,
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: "red",
-    alignSelf: "flex-start",
-    maxWidth: "100%",
+    borderColor: theme.errorColor,
+    color: theme.errorColor,
+    backgroundColor: theme.errorBackgroundColor,
+    // @ts-ignore
+    width: "fit-content",
+    maxWidth: "92%",
   },
   text: {
     fontSize: theme.fontSize,
     padding: 8,
-    color: "red"
+    color: theme.errorColor,
   },
   options: {
     borderTopWidth: 1,
     borderBottomWidth: 0,
     borderRightWidth: 0,
     borderLeftWidth: 0,
-    borderColor: "red",
+    borderColor: theme.errorColor,
     padding: 8,
     display: "flex",
     flexDirection: "row",

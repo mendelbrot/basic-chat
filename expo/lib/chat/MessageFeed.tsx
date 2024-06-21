@@ -28,7 +28,7 @@ const MessageFeed = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView ref={list}>
+      <ScrollView ref={list} style={styles.scrollView}>
         {state.messages.map((item, _index) => (
           <Message key={item.id} message={item} />
         ))}
@@ -43,15 +43,11 @@ const MessageFeed = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 16,
-    borderColor: "slate",
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderRightWidth: 0,
-    borderLeftWidth: 0,
-    // borderRadius: 8,
-    borderWidth: 1,
   },
+  scrollView: {
+    // @ts-ignore
+    scrollbarWidth: "thin"
+  }
 });
 
 export default MessageFeed;

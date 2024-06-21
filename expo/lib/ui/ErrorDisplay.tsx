@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, View, Text, Pressable } from "react-native";
+import theme from "@/lib/ui/theme";
 
 type Props = {
   dismissError: () => void;
@@ -11,7 +12,7 @@ const ErrorDisplay = (props: Props) => {
     <View style={styles.errorContainer}>
       <Text style={styles.errorText}>{props.errorText}</Text>
       <Pressable onPress={props.dismissError}>
-        <Ionicons name="close" size={16} color="red" />
+        <Ionicons name="close" size={16} color={theme.errorIconColor} />
       </Pressable>
     </View>
   );
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   errorText: {
-    color: "red",
+    color: theme.errorColor,
     marginRight: 5,
   },
 });
