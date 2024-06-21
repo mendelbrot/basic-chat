@@ -33,7 +33,7 @@ const LoginForm = () => {
           secureTextEntry
         />
 
-        <Button onPress={handleLogin}>
+        <Button onPress={handleLogin} buttonStyles={styles.button}>
           <Ionicons name="log-in-outline" size={36} color={theme.iconColor} />
         </Button>
 
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    backgroundColor: theme.backgroundColor
     
   },
   innerContainer: {
@@ -67,6 +68,10 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 8,
     fontSize: theme.fontSize,
+    backgroundColor: theme.inputBackgroundColor
+  },
+  button: {
+    backgroundColor: theme.secondaryBackgroundColor,
   },
   error: {
     marginTop: 16,
