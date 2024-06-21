@@ -12,6 +12,7 @@ const theme = {
   menuIconColor: "white",
   errorIconColor: "red",
   inputBackgroundColor: "white",
+  rootBackgroundColor: "black"
 };
 
 export default theme;

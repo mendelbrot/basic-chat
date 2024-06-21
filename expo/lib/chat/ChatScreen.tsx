@@ -5,17 +5,29 @@ import FeatureBar from "@/lib/ui/FeatureBar";
 import ButtonSmall from "../ui/ButtonSmall";
 import { Ionicons } from "@expo/vector-icons";
 import theme from "@/lib/ui/theme";
+import MessageSearchModal from "./MessageSearchModal";
+import { useState } from "react";
 
 const ChatScreen = () => {
+  const [searchModalVisible, setSearchModalVisible] = useState(false);
+
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <FeatureBar
         extraMenu={
-          <ButtonSmall onPress={() => {}}>
-            <Ionicons name="search-outline" size={24} color={theme.menuIconColor} />
+          <ButtonSmall onPress={() => setSearchModalVisible(true)}>
+            <Ionicons
+              name="search-outline"
+              size={24}
+              color={theme.menuIconColor}
+            />
           </ButtonSmall>
         }
       >
+        <MessageSearchModal
+          visible={searchModalVisible}
+          setVisible={setSearchModalVisible}
+        />
         <MessageFeed />
         <InputBar />
       </FeatureBar>
@@ -26,7 +38,7 @@ const ChatScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.backgroundColor
+    backgroundColor: theme.backgroundColor,
   },
 });
 
