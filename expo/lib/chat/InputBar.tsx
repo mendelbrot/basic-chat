@@ -65,7 +65,6 @@ const InputBar = () => {
         // @ts-ignore
         rows={rows}
         autoCapitalize="none"
-        style={styles.input}
         value={text}
         onChangeText={setText}
       />
