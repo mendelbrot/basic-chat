@@ -11,7 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 import theme from "@/lib/ui/theme";
 import { useMain } from "@/lib/context/MainContext";
 import Message from "./Message";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import RootView from "@/lib/ui/RootView";
 import Input from "@/lib/ui/Input";
 
@@ -23,6 +23,7 @@ type Props = {
 const MessageSearchModal = (props: Props) => {
   const state = useMain();
   const [searchText, setSearchText] = useState("");
+  const textInput = useRef<TextInput>(null);
 
   const searchMatches = state.messages.filter((message) =>
     message.text.includes(searchText)
@@ -33,6 +34,12 @@ const MessageSearchModal = (props: Props) => {
     props.setVisible(false);
   };
 
+  useEffect(() => {
+    if (props.visible === true) {
+      textInput.current && textInput.current.focus();
+    }
+  }, [props.visible]);
+
   return (
     <Modal visible={props.visible}>
       <RootView>
@@ -42,6 +49,7 @@ const MessageSearchModal = (props: Props) => {
               <Ionicons name="close" size={24} color={theme.menuIconColor} />
             </ButtonSmall>
             <Input
+              innerRef={textInput}
               autoCapitalize="none"
               style={styles.input}
               value={searchText}
