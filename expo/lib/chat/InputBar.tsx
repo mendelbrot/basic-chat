@@ -9,7 +9,7 @@ import { useAuth } from "@/lib/context/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
 import ErrorDisplay from "@/lib/ui/ErrorDisplay";
 import ButtonSmall from "@/lib/ui/ButtonSmall";
-import theme from "@/lib/ui/theme";
+import Input from "@/lib/ui/Input";
 
 const moreRows = 12;
 const lessRows = 3;
@@ -58,13 +58,12 @@ const InputBar = () => {
           />
         </View>
       )}
-      <TextInput
+      <Input
         multiline
-        ref={textInput}
+        innerRef={textInput}
         // @ts-ignore
         rows={rows}
         autoCapitalize="none"
-        style={styles.input}
         value={text}
         onChangeText={setText}
       />
@@ -79,7 +78,10 @@ const InputBar = () => {
             <Ionicons name="chevron-collapse" size={24} color="black" />
           )}
         </ButtonSmall>
-        <ButtonSmall onPress={clear} disabled={text.length === 0 && rows === lessRows}>
+        <ButtonSmall
+          onPress={clear}
+          disabled={text.length === 0 && rows === lessRows}
+        >
           <Ionicons name="close" size={24} color="black" />
         </ButtonSmall>
       </View>
@@ -90,13 +92,6 @@ const InputBar = () => {
 const styles = StyleSheet.create({
   container: {
     margin: 16,
-  },
-  input: {
-    borderWidth: 1,
-    padding: 8,
-    borderRadius: 8,
-    fontSize: theme.fontSize,
-    backgroundColor: theme.inputBackgroundColor,
   },
   sendButtonRow: {
     paddingTop: 4,

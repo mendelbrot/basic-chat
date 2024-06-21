@@ -12,7 +12,11 @@ const theme = {
   menuIconColor: "white",
   errorIconColor: "red",
   inputBackgroundColor: "white",
-  rootBackgroundColor: "black"
+  rootBackgroundColor: "black", 
+  successButton: "lightgreen",
+  secondaryButton: "lightskyblue",
+  dangerButton: "lightpink",
+
 };
 
 export default theme;
