@@ -1,7 +1,8 @@
 import { StyleSheet, View, TextInput, TextInputProps } from "react-native";
 import theme from "@/lib/ui/theme";
+import { Ref } from "react";
 
-const Input = (props: TextInputProps) => {
+const Input = (props: TextInputProps & { ref?: Ref<TextInput> }) => {
   const { style, ...rest } = props;
 
   return <TextInput style={[styles.input, props.style]} {...rest} />;
